@@ -4,6 +4,7 @@
   "description": "app use for dl vidéo from youtube and Dl it inside our own server.",
   "main": "index.js",
   "scripts": {
+    "start": "nodejs App/js/index.html"
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -20,5 +21,9 @@
   "bugs": {
     "url": "https://github.com/benjaminW78/protoYoutubeVideoDL/issues"
   },
-  "homepage": "https://github.com/benjaminW78/protoYoutubeVideoDL"
+  "homepage": "https://github.com/benjaminW78/protoYoutubeVideoDL",
+  "dependencies": {
+    "browserify": "^10.2.1",
+    "gulp": "^3.8.11"
+  }
 }
