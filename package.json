@@ -1,0 +1,24 @@
+{
+  "name": "protoYoutubeVideoDL",
+  "version": "0.0.1",
+  "description": "app use for dl vidéo from youtube and Dl it inside our own server.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/benjaminW78/protoYoutubeVideoDL.git"
+  },
+  "keywords": [
+    "side-project",
+    "youtube",
+    "dl"
+  ],
+  "author": "benjamin winckell",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/benjaminW78/protoYoutubeVideoDL/issues"
+  },
+  "homepage": "https://github.com/benjaminW78/protoYoutubeVideoDL"
+}
