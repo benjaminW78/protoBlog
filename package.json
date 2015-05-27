@@ -2,9 +2,9 @@
   "name": "protoYoutubeVideoDL",
   "version": "0.0.1",
   "description": "app use for dl vidéo from youtube and Dl it inside our own server.",
-  "main": "index.js",
+  "main": "nodejs App/js/index.js",
   "scripts": {
-    "start": "nodejs App/js/index.html"
+    "start": "node App/js/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
