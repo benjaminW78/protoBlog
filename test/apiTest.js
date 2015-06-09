@@ -1,7 +1,7 @@
 var request = require("supertest");
 var express = require('express');
 var should = require("should");
-var router = require("../router/routes.js");
+var router = require("../app/server/router/routes.js");
 var app = express();
 
 app.use(router);
@@ -31,30 +31,12 @@ describe('API TESTING', function() {
         .get('/api/videos/trucmuch')
         .set('Accept', 'application/json')
         .expect('Content-Type', "application/json; charset=utf-8")
-        .expect(200)
+        .expect(404)
         .end(function(err,res){
             if(err)
                 throw err;
             res.body.should.have.property("item");
-            res.body.item.should.equal("trucmuch");
-
-            done();
-
-        });
-    });
-
-    it("Post video Url",function(done){
-        var youtubeURL = ""
-
-        request(app)
-        .post('/api/videos/')
-        .send()
-        .expect(200)
-        .end(function(err,res){
-            if(err)
-                throw err;
-            res.body.should.have.property("item");
-            res.body.item.should.equal("titi");
+            res.body.item.should.equal("undefined");
 
             done();
 
