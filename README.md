@@ -1,3 +1,3 @@
 # protoYoutubeVideoDL
 Project made for learn about , nodejs , mongodb , react.
-sz
+it's transforming into a personnal blog website with cv and project list and blog part.
