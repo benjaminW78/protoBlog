@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>connection Page</title>
+
+    <!-- Bootstrap -->
+    <link href="vendors/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  </head>
+  <body>
+    <h1>Connection</h1>
+    <form method="POST" action="/backoffice/connect">
+      <label>Email</label>
+      <input type="mail" name="email" autocomplete="on" required="required" placeholder="type your email here" autofocus="on"/>
+      <label>Password</label>
+      <input type="password" name="password" autocomplete="on" required="required" placeholder="type your password here"/>
+      <button type="submit" name="submit" value="Submit">Submit</button>
+    </form>
+<!--     <form method="form" action="">
+      <label>Connection Panel</label>
+      <input type="mail" name="email" autocomplete="on" required="required" placeholder="type your email here"/>
+      <input type="text" name="name" autocomplete="on" required="required" placeholder="type your name here"/>
+      <input type="password" name="password" autocomplete="on" required="required" placeholder="type your password here"/>
+      <button type="submit" name="submit" value="Submit"></button>
+    </form> -->
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script type="text/javascript" src="/vendors/jquery.min.js" ></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="/vendors/bootstrap/js/bootstrap.min.js"></script>
+  </body>
+</html>

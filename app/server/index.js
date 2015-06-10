@@ -15,7 +15,10 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
   extended: true
 }));
 
-console.log(app_root+"/../vendors/");
+app.use(function(req,res,next){
+    console.log("request path : "+req.url);
+    next();
+});
 app.use("/vendors/",serveStatic(app_root+"/../vendors/"));
 app.use(route);
 //server start listening 

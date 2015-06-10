@@ -1,7 +1,16 @@
 var fs = require("fs");
 var https = require("https");
+var mongoose = require("mongoose");
 
 var handlers = {
+
+    backOffice:{
+        connect :function(req,res){
+            console.log("ici c'est connect");
+            console.log(Object.keys(req.body));
+            
+        }
+    },
     user:{
         // connect :function(req,res){
         //     // open bdd user.
