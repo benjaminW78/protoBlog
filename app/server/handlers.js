@@ -7,18 +7,18 @@ var handlers = {
     backOffice:{
         connect :function(req,res){
             console.log("ici c'est connect");
-            console.log(Object.keys(req.body));
-            
         }
     },
     user:{
-        // connect :function(req,res){
-        //     // open bdd user.
-        //     // check if user exist by name and password
-        //     // if set user connected
-        //     // if not send to create page.
-        // },
+        connect :function(req,res){
+            console.log("on connect un user");
+            // open bdd user.
+            // check if user exist by name and password
+            // if set user connected
+            // if not send to create page.
+        },
         create  :function(req,res){
+            console.log("on create un user");
             // get user name , password, email
             // create user and set it inactive
             // register it in bdd

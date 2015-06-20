@@ -5,14 +5,6 @@ var router = express.Router();
 var VIEWS_PATH = "/../../views";
 
 
-router.route("/api/videos/:videoName")
-.get(function(req,res){
-    handlers.videos.get(req,res);
-})
-.delete(function(req,res){
-    handlers.videos.del(req,res);
-});
-
 router.route("/api/users/:user_id")
 .get(function(req,res){
     handlers.user.get(req,res);
@@ -26,6 +18,12 @@ router.route("/api/users/:user_id")
 .delete(function(req,res){
     handlers.user.del(req,res);
 });
+router.route("/backoffice/connect")
+.post(function(req,res){
+    handlers.backOffice.connect(req,res);
+});
+
+// VIEWS ROUTES
 router.route("/")
 .get(function(req,res){
     fs.createReadStream(__dirname+VIEWS_PATH+"/index.html").pipe(res);
@@ -36,10 +34,6 @@ router.route("/admin/connection")
     fs.createReadStream(__dirname+VIEWS_PATH+"/admin/connection.html").pipe(res);
 });
 
-router.route("/backoffice/connect")
-.post(function(req,res){
-    handlers.backOffice.connect(req,res);
-});
 
 
 module.exports = router;

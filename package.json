@@ -1,7 +1,7 @@
 {
-  "name": "protoYoutubeVideoDL",
+  "name": "protoBlog",
   "version": "0.0.1",
-  "description": "app use for dl vidéo from youtube and Dl it inside our own server.",
+  "description": "app use for create blog with connection account.",
   "scripts": {
     "start": "node app/server/index.js",
     "test": "make test"
@@ -35,6 +35,7 @@
     "gulp": "3.8.11",
     "jquery": "2.1.4",
     "mongoose": "4.0.4",
+    "passport": "^0.2.2",
     "react": "^0.13.3"
   }
 }

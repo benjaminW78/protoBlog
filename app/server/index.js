@@ -4,8 +4,7 @@ path = require("path"),
 request = require("request"),
 bodyParser = require("body-parser"),
 route = require("./router/routes.js"),
-serveStatic = require("serve-static"),
-mongoose = require("mongoose");
+serveStatic = require("serve-static");
 
 //server init
 
@@ -19,7 +18,11 @@ app.use(function(req,res,next){
     console.log("request path : "+req.url);
     next();
 });
+
+//create front acces to vendors and css folder
 app.use("/vendors/",serveStatic(app_root+"/../vendors/"));
+app.use("/css/",serveStatic(app_root+"/../css/"));
+
 app.use(route);
 //server start listening 
 
@@ -27,7 +30,5 @@ app.listen(8080);
 
 // Database
 
-// var db = mongoose.connect("mongodb://localhost/YoutubeProject");
-
-
+var dbConnection = require("./db/dbConnection.js");
 
