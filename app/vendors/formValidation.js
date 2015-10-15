@@ -26,6 +26,8 @@ $("#connect,#register").submit(function( event ) {
       },
       error:function(rep){
         console.log(rep);
+        console.log("ERROR");
+
       }
     });
   // Get some values from elements on the page:

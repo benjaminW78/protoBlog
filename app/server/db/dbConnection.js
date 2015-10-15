@@ -1,14 +1,34 @@
-var mongoose = require("mongoose");
+var conf = require('./conf.js'),
+ENV = require('../env.js'),
+dbConf = conf[ENV],
+pg = require('pg');
 
-var db = mongoose.connection;
+var conString = "postgres://"+dbConf.DB_SUPERUSER+":"+dbConf.DB_SUPERPASSWORD+"@"+dbConf.DB_HOST+"/"+dbConf.DB_NAME;
 
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function (callback) {
-    console.log("db Connected "+db.name);
-});
+var connection = function(query, callback){
 
-mongoose.connect("mongodb://localhost/Blog");
+    pg.connect(conString, function(err, client, done) {
+        var handleError = function(err) {
+            // no error occurred, continue with the request
+            if(!err) return false;
 
-mongoose.model("users",new mongoose.Schema(require("./schemas/userSchema.js")));
+            // An error occurred, remove the client from the connection pool.
+            // A truthy value passed to done will remove the connection from the pool
+            // instead of simply returning it to be reused.
+            // In this case, if we have successfully received a client (truthy)
+            // then it will be removed from the pool.
+            if(client){
+                done(client);
+            }
+            res.writeHead(500, {'content-type': 'text/plain'});
+            res.end('An error occurred');
+            return true;
+        };
 
-module.exports = mongoose;
+        if(handleError(err)) return;
+
+        client.query(query,callback.bind(this,done));
+    });
+} 
+
+module.exports = connection;

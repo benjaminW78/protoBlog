@@ -1,0 +1,9 @@
+sudo -u postgres psql
+
+CREATE USER blogSite ;
+ALTER USER blogSite PASSWORD 'azdDEOUjlam845zd';
+CREATE DATABASE bwinckellSite
+GRAND ALL PRIVILEGES ON DATABASE bwinckellSite to blogSite;
+
+\q
+
