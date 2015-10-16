@@ -3,6 +3,7 @@ express = require("express"),
 path = require("path"),
 bodyParser = require("body-parser"),
 route = require("./router/routes.js"),
+expressSession = require("express-session"),
 serveStatic = require("serve-static");
 var passport = require('passport');
 
@@ -23,6 +24,7 @@ app.use(function(req,res,next){
 app.use("/vendors/",serveStatic(app_root+"/../vendors/"));
 app.use("/css/",serveStatic(app_root+"/../css/"));
 
+app.use(expressSession({ secret: 'supercalifragilisticexpialidocious' }));
 //start passport setting
 app.use(passport.initialize());
 app.use(passport.session());

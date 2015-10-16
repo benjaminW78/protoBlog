@@ -1,9 +1,7 @@
 var fs = require("fs");
 var https = require("https");
 var mongoose = require("mongoose");
-var dbCo = require("./db/dbConnection.js");
-var GoogleStrategy = require('passport-linkedin').Strategy;
-var passport = require('passport');
+
 
 var handlers = {
 
@@ -16,20 +14,8 @@ var handlers = {
         connect :function(req,res){
             console.log("on connect un user");
             // open bdd user.
-            passport.use(new GoogleStrategy({
-                    consumerKey: LINKEDIN_API_KEY,
-                    consumerSecret: LINKEDIN_SECRET_KEY,
-                    callbackURL: "http://127.0.0.1:8080/auth/google/callback"
-                },
-                function(token, tokenSecret, profile, done) {
-                    User.findOrCreate({ linkedinId: profile.id }, function (err, user) {
-                      return done(err, user);
-                    });
-                }
-            ));
-            // check if user exist by name and password
-            // if set user connected
-            // if not send to create page.
+
+            res.status(200).send('/admin/backoffice');
         },
         create  :function(req,res){
             console.log("on create un user");

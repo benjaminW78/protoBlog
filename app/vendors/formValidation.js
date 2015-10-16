@@ -6,7 +6,7 @@ $("#connect,#register").submit(function( event ) {
        data[this.name] = this.value;
       });
     var temp = Object.keys(data);
-    var url = "/api/users/"+data.username;
+    var url = "/login";
     var type = undefined;
     if(temp.indexOf("registerBtn")!=-1){
       type = "post";
@@ -21,11 +21,14 @@ $("#connect,#register").submit(function( event ) {
       data: data,
       timeout:3000,
       success : function(rep){
+
         console.log(rep);
+        window.location = rep;
         console.log("success");
       },
       error:function(rep){
-        console.log(rep);
+        var repObj = rep.responseJSON;
+        console.log(repObj.msg);
         console.log("ERROR");
 
       }
