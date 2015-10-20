@@ -4,16 +4,20 @@ $("#connect,#register").submit(function( event ) {
 
     $(event.target.elements).each(function(index){
        data[this.name] = this.value;
-      });
+    });
     var temp = Object.keys(data);
     var url = "/login";
     var type = undefined;
+
     if(temp.indexOf("registerBtn")!=-1){
+      url="/api/users/"+data["email"];
       type = "post";
+      if(data["password"]!==data["passwordConfirm"]){
+        console.log("error password");
+      }
     }else if(temp.indexOf("connectBtn")!=-1){
       type = "get";
     }
-    console.log(data);
 
     $.ajax({
       url: url,
@@ -21,7 +25,6 @@ $("#connect,#register").submit(function( event ) {
       data: data,
       timeout:3000,
       success : function(rep){
-
         console.log(rep);
         window.location = rep;
         console.log("success");

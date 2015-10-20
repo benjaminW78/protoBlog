@@ -3,8 +3,8 @@
   "version": "0.0.1",
   "description": "app use for create blog with connection account.",
   "scripts": {
-    "startDev": "ENV_DEFINITION=development node app/server/index.js",
-    "start": "node app/server/index.js",
+    "startDev": "ENV_DEFINITION=development nodemon app/server/index.js",
+    "start": "nodemon app/server/index.js",
     "test": "make test"
   },
   "repository": {
@@ -24,6 +24,7 @@
   "homepage": "https://github.com/benjaminW78/protoYoutubeVideoDL",
   "devDependencies": {
     "mocha": "2.2.5",
+    "nodemon": "^1.7.2",
     "serve-static": "1.9.3",
     "should": "6.0.3",
     "sinon": "1.14.1",

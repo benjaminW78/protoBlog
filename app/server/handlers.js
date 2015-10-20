@@ -15,10 +15,13 @@ var handlers = {
             console.log("on connect un user");
             // open bdd user.
 
-            res.status(200).send('/admin/backoffice');
+            res.status(200).send('/admin/home');
         },
         create  :function(req,res){
             console.log("on create un user");
+            res.status(200).send('/admin/account');
+
+
             // get user name , password, email
             // create user and set it inactive
             // register it in bdd
