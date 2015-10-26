@@ -16,24 +16,25 @@ router.route("/api/users/:user_id")
     handlers.user.update(req,res);
 })
 .post(function(req,res,next){
-    console.log("YOLOOOo");
-    passport.authenticate('create-account',function(err,user,info){
-        if(err){
-            res.status(err.status).send(err);
+    passport.authenticate('local-create-account',function(err,user,info){
+        if(err && err.name ==="error"){
+            console.log(err.name);
+
+            if(err.code==="23505")
+                res.status(409).send({status:"error",msg:"Email already exist"});
         }
+
         if(user){
             handlers.user.create(req,res);
         }
-        console.log("toto");
-    });
+
+    })(req, res, next);
+
 })
 .delete(function(req,res){
     handlers.user.del(req,res);
 });
-router.route("/backoffice/connect")
-.post(function(req,res){
-    handlers.backOffice.connect(req,res);
-});
+
 // VIEWS ROUTES
 router.route("/")
 .get(function(req,res){
@@ -60,6 +61,7 @@ router.route("/login")
             res.status(err.status).send(err);
         if(user){
             console.log("ici login call");
+
             handlers.user.connect(req,res);
         }
         else{

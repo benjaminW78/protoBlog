@@ -7,3 +7,59 @@ GRAND ALL PRIVILEGES ON DATABASE bwinckellSite to blogSite;
 
 \q
 
+-- Table: site.users
+
+-- DROP TABLE site.users;
+
+CREATE TABLE site.users
+(
+  email text NOT NULL,
+  name text,
+  password text,
+  "creationDate" timestamp with time zone NOT NULL DEFAULT now(),
+  access_right integer,
+  "emailValid" boolean NOT NULL DEFAULT false,
+  "validatedByAdmin" boolean NOT NULL DEFAULT false,
+  surname text,
+  CONSTRAINT "userPrimaryKey" PRIMARY KEY (email)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE site.users
+  OWNER TO blogsite;
+
+
+-- Table: site."userRights"
+
+-- DROP TABLE site."userRights";
+
+CREATE TABLE site."userRights"
+(
+  "rightId" integer NOT NULL,
+  "userEmail" text NOT NULL,
+  CONSTRAINT "userRights_userEmail_fkey" FOREIGN KEY ("userEmail")
+      REFERENCES site.users (email) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE site."userRights"
+  OWNER TO blogsite;
+
+-- Table: site.rights
+
+-- DROP TABLE site.rights;
+
+CREATE TABLE site.rights
+(
+  right_name text,
+  right_index serial NOT NULL,
+  CONSTRAINT rights_pkey PRIMARY KEY (right_index)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE site.rights
+  OWNER TO blogsite;

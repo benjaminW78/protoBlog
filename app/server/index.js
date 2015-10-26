@@ -6,7 +6,7 @@ route = require("./router/routes.js"),
 expressSession = require("express-session"),
 serveStatic = require("serve-static");
 var passport = require('passport');
-
+var cookieParser = require('cookie-parser')
 //server init
 
 var app = express();
@@ -25,8 +25,13 @@ app.use("/vendors/",serveStatic(app_root+"/../vendors/"));
 app.use("/css/",serveStatic(app_root+"/../css/"));
 
 app.use(expressSession({ secret: 'supercalifragilisticexpialidocious' }));
+app.use(cookieParser('supercalifragilisticexpialidocious'));
+
 //start passport setting
 app.use(passport.initialize());
+
+// passport.session middleware is a Passport Strategy which will load the user object onto req.
+// user if a serialised user object was found in the server.
 app.use(passport.session());
 
 app.use(route);
