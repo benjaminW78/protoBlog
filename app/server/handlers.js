@@ -12,10 +12,10 @@ var handlers = {
     },
     user:{
         connect :function(req,res){
-            console.log("on connect un user");
             // open bdd user.
-console.log(req.user)
-            // res.status(200).send('/admin/home');
+            console.log("connect user "+req.isAuthenticated());
+            // 
+            res.status(200).send('/admin/home');
         },
         create  :function(req,res){
             console.log("on create un user");
@@ -28,7 +28,7 @@ console.log(req.user)
             // return validation that account was created and need to be active
         },
         get :function(req,res){
-            console.log("get user "+req.isAuthenticated())
+            console.log("get user "+req.isAuthenticated());
             // get user by name or id
             // return model from bdd 
         },

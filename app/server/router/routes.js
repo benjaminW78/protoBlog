@@ -36,6 +36,15 @@ router.route("/api/users/:user_id")
 });
 
 // VIEWS ROUTES
+router.route(/\/admin\//)
+.get(function(req,res){
+    console.log("req",req.isAuthenticated(),req.path,req.url);
+    if(req.isAuthenticated())
+        res.status(200).send(req.path);
+    else
+        res.status(500).send('/connection');
+})
+
 router.route("/")
 .get(function(req,res){
     fs.createReadStream(__dirname+VIEWS_PATH+"/index.html").pipe(res);
@@ -61,8 +70,12 @@ router.route("/login")
             res.status(err.status).send(err);
         if(user){
             console.log("ici login call");
-
-            handlers.user.connect(req,res);
+            req.logIn(user,function(err,user){
+                if(err){
+                    console.log(err,'session start error');
+                }
+                handlers.user.connect(req,res);
+            });
         }
         else{
             res.status(401).send(info);
@@ -70,4 +83,4 @@ router.route("/login")
      })(req, res, next);
  });
 
-module.exports = router;
+module.exports= router;
