@@ -8,13 +8,18 @@ var passportId = require("../passportStrategies/passportIdentification.js");
 var passportReg = require("../passportStrategies/passportRegistration.js");
 var VIEWS_PATH = "/../../views";
 
-router.route("/api/users/:user_id")
+router.route("/admin/logout")
 .get(function(req,res){
-    handlers.user.get(req,res);
-})
-.put(function(req,res){
-    handlers.user.update(req,res);
-})
+    req.session.destroy();
+});
+
+router.route("/api/users/:user_id")
+// .get(function(req,res){
+//     handlers.user.get(req,res);
+// })
+// .put(function(req,res){
+//     handlers.user.update(req,res);
+// })
 .post(function(req,res,next){
     passport.authenticate('local-create-account',function(err,user,info){
         if(err && err.name ==="error"){
@@ -31,37 +36,9 @@ router.route("/api/users/:user_id")
     })(req, res, next);
 
 })
-.delete(function(req,res){
-    handlers.user.del(req,res);
-});
-
-// VIEWS ROUTES
-router.route(/\/admin\//)
-.get(function(req,res){
-    console.log("req",req.isAuthenticated(),req.path,req.url);
-    if(req.isAuthenticated())
-        res.status(200).send(req.path);
-    else
-        res.status(500).send('/connection');
-})
-
-router.route("/")
-.get(function(req,res){
-    fs.createReadStream(__dirname+VIEWS_PATH+"/index.html").pipe(res);
-});
-
-router.route("/connection")
-.get(function(req,res){
-    fs.createReadStream(__dirname+VIEWS_PATH+"/connection.html").pipe(res);
-});
-router.route("/admin/home")
-.get(function(req,res){
-    fs.createReadStream(__dirname+VIEWS_PATH+"/admin/home.html").pipe(res);
-});
-router.route("/admin/account")
-.get(function(req,res){
-    fs.createReadStream(__dirname+VIEWS_PATH+"/admin/account.html").pipe(res);
-});
+// .delete(function(req,res){
+//     handlers.user.del(req,res);
+// });
 
 router.route("/login")
 .get(function(req, res, next) {
@@ -82,5 +59,38 @@ router.route("/login")
         }
      })(req, res, next);
  });
+// VIEWS ROUTES
+function loggedRoutes(req,res,next){
+    console.log("req",req.isAuthenticated(),req.path,req.url);
+    if(!req.isAuthenticated())
+        res.redirect('/connection');
+    else{
+        next();
+    }
+}
+
+router.route("/")
+.get(function(req,res){
+    fs.createReadStream(__dirname+VIEWS_PATH+"/index.html").pipe(res);
+});
+
+router.route("/connection")
+.get(function(req,res){
+    fs.createReadStream(__dirname+VIEWS_PATH+"/connection.html").pipe(res);
+});
+router.route("/admin/home")
+.get(loggedRoutes,function(req,res){
+    fs.createReadStream(__dirname+VIEWS_PATH+"/admin/home.html").pipe(res);
+});
+router.route("/admin/account")
+.get(loggedRoutes,function(req,res){
+    res.sendFile(__dirname+VIEWS_PATH+"/admin/account.html");
+});
+router.route("/admin/CreateBlogPost")
+.get(loggedRoutes,function(req,res){
+    res.sendFile(__dirname+VIEWS_PATH+"/admin/createPostBlog.html");
+});
+
+
 
 module.exports= router;
