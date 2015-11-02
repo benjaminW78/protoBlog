@@ -8,38 +8,9 @@ var passportId = require("../passportStrategies/passportIdentification.js");
 var passportReg = require("../passportStrategies/passportRegistration.js");
 var VIEWS_PATH = "/../../views";
 
-router.route("/admin/logout")
-.get(function(req,res){
-    req.session.destroy();
-});
 
-router.route("/api/users/:user_id")
-// .get(function(req,res){
-//     handlers.user.get(req,res);
-// })
-// .put(function(req,res){
-//     handlers.user.update(req,res);
-// })
-.post(function(req,res,next){
-    passport.authenticate('local-create-account',function(err,user,info){
-        if(err && err.name ==="error"){
-            console.log(err.name);
 
-            if(err.code==="23505")
-                res.status(409).send({status:"error",msg:"Email already exist"});
-        }
-
-        if(user){
-            handlers.user.create(req,res);
-        }
-
-    })(req, res, next);
-
-})
-// .delete(function(req,res){
-//     handlers.user.del(req,res);
-// });
-
+// create a session
 router.route("/login")
 .get(function(req, res, next) {
     passport.authenticate('local-connect',function(err,user,info){
@@ -59,7 +30,15 @@ router.route("/login")
         }
      })(req, res, next);
  });
-// VIEWS ROUTES
+
+// Log out function from session
+router.route("/admin/logout")
+.get(function(req,res){
+    req.session.destroy();
+            res.status(200).send('/admin/home');
+});
+
+// FUNCTION FOR VERIFY ROUTE RIGHT
 function loggedRoutes(req,res,next){
     console.log("req",req.isAuthenticated(),req.path,req.url);
     if(!req.isAuthenticated())
@@ -69,28 +48,19 @@ function loggedRoutes(req,res,next){
     }
 }
 
-router.route("/")
-.get(function(req,res){
-    fs.createReadStream(__dirname+VIEWS_PATH+"/index.html").pipe(res);
-});
-
-router.route("/connection")
-.get(function(req,res){
-    fs.createReadStream(__dirname+VIEWS_PATH+"/connection.html").pipe(res);
-});
+// PRIVATE / LOGGER ROUTES
 router.route("/admin/home")
 .get(loggedRoutes,function(req,res){
     fs.createReadStream(__dirname+VIEWS_PATH+"/admin/home.html").pipe(res);
 });
 router.route("/admin/account")
 .get(loggedRoutes,function(req,res){
-    res.sendFile(__dirname+VIEWS_PATH+"/admin/account.html");
+     fs.createReadStream(__dirname+VIEWS_PATH+"/admin/account.html").pipe(res);
 });
 router.route("/admin/CreateBlogPost")
 .get(loggedRoutes,function(req,res){
-    res.sendFile(__dirname+VIEWS_PATH+"/admin/createPostBlog.html");
+     fs.createReadStream(__dirname+VIEWS_PATH+"/admin/createBlogPost.html").pipe(res);
 });
 
 
-
-module.exports= router;
+module.exports = router;

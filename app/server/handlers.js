@@ -4,12 +4,6 @@ var mongoose = require("mongoose");
 
 
 var handlers = {
-
-    backOffice:{
-        connect :function(req,res){
-            console.log("ici c'est connect");
-        }
-    },
     user:{
         connect :function(req,res){
             // open bdd user.
@@ -28,9 +22,15 @@ var handlers = {
             // return validation that account was created and need to be active
         },
         get :function(req,res){
-            console.log("get user "+req.isAuthenticated());
             // get user by name or id
-            // return model from bdd 
+            // return model from bdd
+            var currentUser = req.session.passport.user;
+
+            delete currentUser.password;
+            delete currentUser.validated_by_admin;
+            delete currentUser.email_valid;
+
+            res.send({users:[currentUser]});
         },
         update :function(req,res){
             // get current user id 
@@ -43,20 +43,16 @@ var handlers = {
             //delete user by id from bdd if user password ok twice
         }
     },
-    videos:{
-        get:function(req,res){
-            var bdd = ["titi","toto","totu"];
-
-            var videoExist=bdd.indexOf(req.params.videoName);
-
-            if(videoExist!=-1)
-                res.status(200).send({item:bdd[videoExist]});
-            else
-                res.status(404).send({item:"undefined"});
+    blog:{
+        editPost:function(req,res){
+            res.send("EDIT A existing POST");
 
         },
-        del:function(req,res){
-            res.send("delete "+ req.body.url);
+        createPost:function(req,res){
+            res.send("CREATE A NEW POST");
+        },
+        getPosts:function(req,res){
+            res.send("get posts");
         }
     }
 };

@@ -2,12 +2,22 @@ var app_root = __dirname,
 express = require("express"),
 path = require("path"),
 bodyParser = require("body-parser"),
-route = require("./router/routes.js"),
+routePriv = require("./router/routes.private.js"),
+routePub = require("./router/routes.public.js"),
+restApiPub = require("./router/restApi.public.js"),
+restApiPriv = require("./router/restApi.private.js"),
 expressSession = require("express-session"),
 serveStatic = require("serve-static");
+var https=require("https");
 var passport = require('passport');
-var cookieParser = require('cookie-parser')
+var cookieParser = require('cookie-parser');
+var fs = require('fs');
 //server init
+
+var options = {
+  key: fs.readFileSync(__dirname+'/httpKeys/hacksparrow-key.pem'),
+  cert: fs.readFileSync(__dirname+'/httpKeys/hacksparrow-cert.pem')
+};
 
 var app = express();
 app.use( bodyParser.json() );       // to support JSON-encoded bodies
@@ -34,9 +44,14 @@ app.use(passport.initialize());
 // user if a serialised user object was found in the server.
 app.use(passport.session());
 
-app.use(route);
-//server start listening 
+app.use(restApiPub);
+app.use(restApiPriv);
+app.use(routePub);
+app.use(routePriv);
+//server start listening
 
-app.listen(8080);
+// app.listen(8080);
 
+// https test
+https.createServer(options, app).listen(8000);
 // Database

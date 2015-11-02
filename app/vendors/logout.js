@@ -1,4 +1,4 @@
-$("logout").on("click",function(){
+$("#logout").on("click",function(){
      $.ajax({
       url: "/admin/logout",
       type: "GET",
@@ -7,6 +7,9 @@ $("logout").on("click",function(){
         var repObj = rep.responseJSON;
         console.log(repObj.msg);
         console.log("ERROR");
+      },
+      success:function(rep){
+        window.location=rep;
       }
     });
 });
