@@ -26,11 +26,11 @@ router.route("/api/users/:user_id")
 });
 
 
-router.route("/blogPosts")
+router.route("/api/blogPosts")
 .post(loggedRoutes,function(req,res){
     handlers.blog.createPost(req,res);
 });
-router.route("/blogPosts:blog_post_id")
+router.route("api/blogPosts:blog_post_id")
 .put(loggedRoutes,function(req,res){
     handlers.blog.editPost(req,res);
 

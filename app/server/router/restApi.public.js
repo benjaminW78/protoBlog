@@ -29,7 +29,7 @@ router.route("/api/users/:user_id")
 // .delete(function(req,res){
 //     handlers.user.del(req,res);
 // });
-router.route("/blogPosts")
+router.route("/api/blogPosts")
 .get(function(req,res){
     handlers.blog.getPosts(req,res);
 });
