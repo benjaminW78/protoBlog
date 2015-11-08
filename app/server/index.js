@@ -1,6 +1,5 @@
 var app_root = __dirname,
 express = require("express"),
-path = require("path"),
 bodyParser = require("body-parser"),
 routePriv = require("./router/routes.private.js"),
 routePub = require("./router/routes.public.js"),
@@ -31,7 +30,7 @@ app.use(function(req,res,next){
 });
 
 //create front acces to vendors and css folder
-app.use("/vendors/",serveStatic(app_root+"/../vendors/"));
+app.use("/vendors/",serveStatic(app_root+"/../js/"));
 app.use("/css/",serveStatic(app_root+"/../css/"));
 
 app.use(expressSession({ secret: 'supercalifragilisticexpialidocious' }));

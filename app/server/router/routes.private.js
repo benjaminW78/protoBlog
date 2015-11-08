@@ -42,7 +42,7 @@ router.route("/admin/logout")
 function loggedRoutes(req,res,next){
     console.log("req",req.isAuthenticated(),req.path,req.url);
     if(!req.isAuthenticated())
-        res.redirect('/connection');
+        res.status(401).redirect('/connection');
     else{
         next();
     }

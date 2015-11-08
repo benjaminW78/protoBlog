@@ -7,7 +7,7 @@ var router = express.Router();
 function loggedRoutes(req,res,next){
     console.log("req",req.isAuthenticated(),req.path,req.url);
     if(!req.isAuthenticated())
-        res.status(403).send('wrong rights');
+        res.status(401).send('Unauthorized');
     else{
         next();
     }
@@ -30,10 +30,19 @@ router.route("/api/blogPosts")
 .post(loggedRoutes,function(req,res){
     handlers.blog.createPost(req,res);
 });
-router.route("api/blogPosts:blog_post_id")
+router.route("/api/blogPosts:blog_post_id")
 .put(loggedRoutes,function(req,res){
     handlers.blog.editPost(req,res);
 
+});
+router.route("/api/categories")
+.get(loggedRoutes,function(req,res){
+    handlers.blog.getCategories(req,res);
+});
+
+router.route("/api/postStatus")
+.get(loggedRoutes,function(req,res){
+    handlers.blog.getPostStatus(req,res);
 });
 
 module.exports = router;

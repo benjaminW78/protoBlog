@@ -26,7 +26,7 @@ $("#connect,#register").submit(function( event ) {
       timeout:3000,
       success : function(rep){
         console.log(rep);
-        window.location = rep;
+        window.location = (JSON.parse(rep.data)).path;
         console.log("success");
       },
       error:function(rep){
