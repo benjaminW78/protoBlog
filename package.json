@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "app use for create blog with connection account.",
   "scripts": {
+    "preinstall": "sudo apt-get install g++",
     "startDev": "ENV_DEFINITION=development nodemon app/server/index.js",
     "start": "nodemon app/server/index.js",
     "test": "make test"
@@ -23,27 +24,35 @@
   },
   "homepage": "https://github.com/benjaminW78/protoYoutubeVideoDL",
   "devDependencies": {
+    "browser-sync": "^2.9.12",
+    "browserify": "^10.2.1",
+    "gulp": "^3.9.0",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-uglify": "^1.4.2",
+    "gulp-util": "^3.0.7",
+    "lodash.assign": "^3.2.0",
     "mocha": "2.2.5",
     "nodemon": "^1.7.2",
-    "serve-static": "1.9.3",
     "should": "6.0.3",
     "sinon": "1.14.1",
-    "supertest": "1.0.1"
+    "supertest": "1.0.1",
+    "vinyl-source-stream": "^1.1.0",
+    "watchify": "^3.6.0"
   },
   "dependencies": {
+    "angular": "^1.4.7",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "1.12.4",
     "bootstrap": "3.3.4",
     "browserify": "10.2.1",
     "cookie-parser": "^1.4.0",
     "express-session": "^1.11.3",
-    "gulp": "3.8.11",
     "jquery": "2.1.4",
     "jsonwebtoken": "^5.4.0",
     "mongoose": "4.0.4",
     "passport": "^0.2.2",
     "passport-local": "^1.0.0",
     "pg": "^4.4.2",
-    "react": "^0.13.3"
+    "serve-static": "^1.10.0"
   }
 }
