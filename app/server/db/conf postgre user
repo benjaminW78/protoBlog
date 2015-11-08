@@ -1,11 +1,126 @@
 sudo -u postgres psql
 
-CREATE USER blogSite ;
-ALTER USER blogSite PASSWORD 'azdDEOUjlam845zd';
-CREATE DATABASE bwinckellSite
-GRAND ALL PRIVILEGES ON DATABASE bwinckellSite to blogSite;
+-- Database: bwinckellsite
 
-\q
+-- DROP DATABASE bwinckellsite;
+
+CREATE DATABASE bwinckellsite
+  WITH OWNER = postgres
+       ENCODING = 'UTF8'
+       TABLESPACE = pg_default
+       LC_COLLATE = 'fr_FR.UTF-8'
+       LC_CTYPE = 'fr_FR.UTF-8'
+       CONNECTION LIMIT = -1;
+GRANT CONNECT, TEMPORARY ON DATABASE bwinckellsite TO public;
+GRANT ALL ON DATABASE bwinckellsite TO postgres;
+GRANT ALL ON DATABASE bwinckellsite TO blogsite;
+
+-- Schema: site
+
+-- DROP SCHEMA site;
+
+CREATE SCHEMA site
+  AUTHORIZATION blogsite;
+
+
+-- Table: site."blogPostCategories"
+
+-- DROP TABLE site."blogPostCategories";
+
+CREATE TABLE site."blogPostCategories"
+(
+  id serial NOT NULL,
+  name character varying(30) NOT NULL,
+  CONSTRAINT "blogPostCategories_pkey" PRIMARY KEY (id)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE site."blogPostCategories"
+  OWNER TO blogsite;
+
+
+-- Table: site."blogPostStatus"
+
+-- DROP TABLE site."blogPostStatus";
+
+CREATE TABLE site."blogPostStatus"
+(
+  id serial NOT NULL,
+  name character varying(30),
+  CONSTRAINT "blogPostStatus_pkey" PRIMARY KEY (id)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE site."blogPostStatus"
+  OWNER TO blogsite;
+
+
+-- Table: site."blogPostTag"
+
+-- DROP TABLE site."blogPostTag";
+
+CREATE TABLE site."blogPostTag"
+(
+  tag character varying(30),
+  post_id integer,
+  CONSTRAINT "blogPostTag_post_id_fkey" FOREIGN KEY (post_id)
+      REFERENCES site."blogPosts" (id) MATCH SIMPLE
+      ON UPDATE CASCADE ON DELETE CASCADE
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE site."blogPostTag"
+  OWNER TO blogsite;
+
+
+-- Table: site."blogPosts"
+
+-- DROP TABLE site."blogPosts";
+
+CREATE TABLE site."blogPosts"
+(
+  title character varying(280) NOT NULL,
+  content text NOT NULL,
+  id serial NOT NULL,
+  creation_date timestamp with time zone,
+  author_email text,
+  status integer,
+  summary character varying(280),
+  category_id integer,
+  CONSTRAINT "blogPosts_pkey" PRIMARY KEY (id),
+  CONSTRAINT "blogPosts_author_email_fkey" FOREIGN KEY (author_email)
+      REFERENCES site.users (email) MATCH SIMPLE
+      ON UPDATE CASCADE ON DELETE NO ACTION,
+  CONSTRAINT "blogPosts_category_id_fkey" FOREIGN KEY (category_id)
+      REFERENCES site."blogPostCategories" (id) MATCH SIMPLE
+      ON UPDATE CASCADE ON DELETE RESTRICT
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE site."blogPosts"
+  OWNER TO blogsite;
+
+
+-- Table: site.rights
+
+-- DROP TABLE site.rights;
+
+CREATE TABLE site.rights
+(
+  right_name text NOT NULL,
+  id serial NOT NULL,
+  CONSTRAINT rights_pkey PRIMARY KEY (right_name)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE site.rights
+  OWNER TO blogsite;
+
 
 -- Table: site.users
 
@@ -14,52 +129,18 @@ GRAND ALL PRIVILEGES ON DATABASE bwinckellSite to blogSite;
 CREATE TABLE site.users
 (
   email text NOT NULL,
-  name text,
+  last_name text,
   password text,
-  "creationDate" timestamp with time zone NOT NULL DEFAULT now(),
+  creation_date timestamp with time zone NOT NULL DEFAULT now(),
   access_right integer,
-  "emailValid" boolean NOT NULL DEFAULT false,
-  "validatedByAdmin" boolean NOT NULL DEFAULT false,
-  surname text,
+  email_valid boolean NOT NULL DEFAULT false,
+  validated_by_admin boolean NOT NULL DEFAULT false,
+  first_name text,
+  pseudo text,
   CONSTRAINT "userPrimaryKey" PRIMARY KEY (email)
 )
 WITH (
   OIDS=FALSE
 );
 ALTER TABLE site.users
-  OWNER TO blogsite;
-
-
--- Table: site."userRights"
-
--- DROP TABLE site."userRights";
-
-CREATE TABLE site."userRights"
-(
-  "rightId" integer NOT NULL,
-  "userEmail" text NOT NULL,
-  CONSTRAINT "userRights_userEmail_fkey" FOREIGN KEY ("userEmail")
-      REFERENCES site.users (email) MATCH SIMPLE
-      ON UPDATE NO ACTION ON DELETE NO ACTION
-)
-WITH (
-  OIDS=FALSE
-);
-ALTER TABLE site."userRights"
-  OWNER TO blogsite;
-
--- Table: site.rights
-
--- DROP TABLE site.rights;
-
-CREATE TABLE site.rights
-(
-  right_name text,
-  right_index serial NOT NULL,
-  CONSTRAINT rights_pkey PRIMARY KEY (right_index)
-)
-WITH (
-  OIDS=FALSE
-);
-ALTER TABLE site.rights
   OWNER TO blogsite;
