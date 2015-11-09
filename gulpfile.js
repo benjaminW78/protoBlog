@@ -8,41 +8,48 @@ var buffer = require('vinyl-buffer');
 var gutil = require('gulp-util');
 var sourcemaps = require('gulp-sourcemaps');
 var assign = require('lodash.assign');
+var path = require('path');
 
 
+var appPath = __dirname+"app/";
+var pathJs = appPath+"vendors/";
+var pathPubJs = appPath+"public/js/";
+var pathHtml = appPath+"views/";
+console.log(appPath,pathJs,pathHtml);
+// Uses browserify node.js package
+function bundle(browserified, env) {
+  console.log(browserified);
+  browserified
+    .bundle()
+    .pipe(source('app.js'))
+    .pipe(gulp.dest(pathPubJs));
+}
 
+function browserifyTask(env) {
+  return function() {
+    var file = path.resolve(pathJs+"appAngular/main.js");
+    var browserified = browserify({
+      basedir: appPath,
+      debug: (env==="dev")?true:false,
+      entries: pathJs+"appAngular/main.js",
+      cache: {},
+      packageCache: {},
+      fullPaths: appPath,
+    });
 
-gulp.task('watchAngularAppDev',function(){
+    if (env === 'prod') {
+      browserified.transform({global: true}, 'uglifyify');
+    }
+    if (env === 'dev') {
+       browserified = watchify(browserified);
+       browserified.on('update', function(){
+        bundle(browserified, env);
+      });
+    }
 
-  // add custom browserify options here
-  var customOpts = {
-    entries: ['./app/vendors/appAngular/main.js'],
-    debug: true
-  };
-
-  var opts = assign({}, watchify.args, customOpts);
-
-  var b = watchify(browserify(opts));
-
-  // add transformations here
-  // i.e. b.transform(coffeeify);
-
-  b.on('update', bundle); // on any dep update, runs the bundler
-  b.on('log', gutil.log); // output build logs to terminal
-
-  function bundle() {
-
-    return b.bundle()
-      // log errors if they happen
-      .on('error', gutil.log.bind(gutil, 'Browserify Error'))
-      .pipe(source('app.js'))
-      // optional, remove if you don't need to buffer file contents
-      .pipe(buffer())
-      // optional, remove if you dont want sourcemaps
-      .pipe(sourcemaps.init({loadMaps: true})) // loads map from browserify file
-         // Add transformation tasks to the pipeline here.
-      .pipe(sourcemaps.write('./')) // writes .map file
-      .pipe(gulp.dest('./app/js/'));
+    bundle(browserified, env);
   }
+}
 
-});
+// Calls browserify function
+gulp.task('browserify-dev', browserifyTask('dev'));

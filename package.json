@@ -36,6 +36,7 @@
     "should": "6.0.3",
     "sinon": "1.14.1",
     "supertest": "1.0.1",
+    "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.6.0"
   },

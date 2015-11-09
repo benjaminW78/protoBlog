@@ -28,7 +28,6 @@ app.use(function(req,res,next){
     console.log("request path : "+req.url);
     next();
 });
-
 //create front acces to vendors and css folder
 app.use("/vendors/",serveStatic(app_root+"/../js/"));
 app.use("/css/",serveStatic(app_root+"/../css/"));
