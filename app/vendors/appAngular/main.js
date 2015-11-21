@@ -21,4 +21,8 @@ app.config(function($routeProvider) {
         templateUrl : '/html/connection.html',
         controller:'connectionCtrl'
     })
+
+    .otherwise({
+        redirectTo: '/'
+    });
 });
