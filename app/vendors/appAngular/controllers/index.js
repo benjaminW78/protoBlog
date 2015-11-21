@@ -1,4 +1,5 @@
 'use strict';
+//  create a index.js file inside every js directory and require only the path with browserify !
 
 var app = require('angular').module('Blog');
 app.controller('connectionCtrl', require('./connection.ctrl.js'));
