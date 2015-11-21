@@ -7,6 +7,7 @@ restApiPub = require("./router/restApi.public.js"),
 restApiPriv = require("./router/restApi.private.js"),
 expressSession = require("express-session"),
 serveStatic = require("serve-static");
+
 var https=require("https");
 var passport = require('passport');
 var cookieParser = require('cookie-parser');
@@ -29,8 +30,9 @@ app.use(function(req,res,next){
     next();
 });
 //create front acces to vendors and css folder
-app.use("/vendors/",serveStatic(app_root+"/../js/"));
-app.use("/css/",serveStatic(app_root+"/../css/"));
+app.use("/js/",serveStatic(app_root+"/../public/js/"));
+app.use("/css/",serveStatic(app_root+"/../public/css/"));
+app.use("/html/",serveStatic(app_root+"/../public/html/"));
 
 app.use(expressSession({ secret: 'supercalifragilisticexpialidocious' }));
 app.use(cookieParser('supercalifragilisticexpialidocious'));
