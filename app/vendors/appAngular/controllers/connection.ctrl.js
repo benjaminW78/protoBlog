@@ -1,8 +1,6 @@
-data = ["$scope"
+data = ["$scope",
 function($scope){
-    console.log("FDPPPPP")
     $scope.connection = function(){
-        console.log(this);
     };
 }];
 
