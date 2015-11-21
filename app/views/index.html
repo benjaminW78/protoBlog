@@ -1,26 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Index</title>
+<html lang="en" ng-app="Blog">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+        <title>Index</title>
+        <script src="/js/app.js"></script>
 
-    <!-- Bootstrap -->
-    <link href="vendors/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
-  </head>
-  <body ng-app="bwinckell">
-    <h1>Hello, world!</h1>
-
-    <a href="/connection">ici on go connection</a>
-    <script src="/vendors/angular/angular.min.js"></script>
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script type="text/javascript" src="/vendors/jquery.min.js" ></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="/vendors/bootstrap/js/bootstrap.min.js"></script>
-
-
-  </body>
+        <link href="/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/css/form.css" rel="stylesheet">
+        <!--[if lt IE 9]>
+        <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+    </head>
+    <body >
+        <header></header>
+        <div id="mainContainer">
+            <div ng-view></div>
+        </div>
+        <footer></footer>
+    </body>
 </html>
