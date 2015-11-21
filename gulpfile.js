@@ -12,8 +12,8 @@ var del = require('del');
 
 
 var appPath = __dirname+"/app/";
-var pathJs = "vendors/";
-var pathPubJs = appPath+"public/js/";
+var pathJs = appPath+"vendors/";
+var pathPubJs = "public/js/";
 var pathHtml = appPath+"views/";
 var pathStyles = appPath+"styles/";
 var pathPubStyles = appPath+"public/css/";
@@ -46,8 +46,8 @@ function browserifyTask(env) {
         browserified = watchify(browserified);// Englob browserify inside whatchify
         browserified.on('log', gutil.log); // output build logs to terminal
 
-        browserified.on('update', function(){
-            console.log("rebuild js")
+        browserified.on('update', function(event){
+            console.log("rebuild js",event);
             bundle(browserified, env);
         });
     }
@@ -64,8 +64,20 @@ gulp.task('clean:html', function () {
   ]);
 });
 
+gulp.task('clean:js', function () {
+  return del([
+    pathPubJs+'**/*',
+  ]);
+});
+
+gulp.task('clean:css', function () {
+  return del([
+    pathPubStyles+'**/*',
+  ]);
+});
+
 // Calls browserify function
-gulp.task('browserify-dev', browserifyTask('dev'));
+gulp.task('browserify-dev',['clean:js'], browserifyTask('dev'));
 
 gulp.task('watch-html', function(){
     gulp.watch(pathHtml+'**/*',['deploy-html']);
