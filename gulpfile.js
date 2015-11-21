@@ -4,21 +4,23 @@ var watchify = require('watchify');
 var browserify = require('browserify');
 var gulp = require('gulp');
 var source = require('vinyl-source-stream');
-var buffer = require('vinyl-buffer');
 var gutil = require('gulp-util');
 var sourcemaps = require('gulp-sourcemaps');
-var assign = require('lodash.assign');
 var path = require('path');
+var stringify = require('stringify');
+var del = require('del');
 
 
-var appPath = __dirname+"app/";
-var pathJs = appPath+"vendors/";
+var appPath = __dirname+"/app/";
+var pathJs = "vendors/";
 var pathPubJs = appPath+"public/js/";
 var pathHtml = appPath+"views/";
-console.log(appPath,pathJs,pathHtml);
+var pathStyles = appPath+"styles/";
+var pathPubStyles = appPath+"public/css/";
+var pathPubHtml = appPath+"public/html/";
+// console.log(appPath,pathJs,pathHtml);
 // Uses browserify node.js package
 function bundle(browserified, env) {
-  console.log(browserified);
   browserified
     .bundle()
     .pipe(source('app.js'))
@@ -31,25 +33,58 @@ function browserifyTask(env) {
     var browserified = browserify({
       basedir: appPath,
       debug: (env==="dev")?true:false,
-      entries: pathJs+"appAngular/main.js",
+      entries: [pathJs+"appAngular/main.js"],
       cache: {},
       packageCache: {},
-      fullPaths: appPath,
+      plugins:[watchify]
     });
 
     if (env === 'prod') {
       browserified.transform({global: true}, 'uglifyify');
     }
     if (env === 'dev') {
-       browserified = watchify(browserified);
-       browserified.on('update', function(){
-        bundle(browserified, env);
-      });
+        browserified = watchify(browserified);// Englob browserify inside whatchify
+        browserified.on('log', gutil.log); // output build logs to terminal
+
+        browserified.on('update', function(){
+            console.log("rebuild js")
+            bundle(browserified, env);
+        });
     }
 
+    // browserified.transform(stringify(['.html']));
     bundle(browserified, env);
-  }
+  };
 }
+
+
+gulp.task('clean:html', function () {
+  return del([
+    pathPubHtml+'**/*',
+  ]);
+});
 
 // Calls browserify function
 gulp.task('browserify-dev', browserifyTask('dev'));
+
+gulp.task('watch-html', function(){
+    gulp.watch(pathHtml+'**/*',['deploy-html']);
+});
+gulp.task('deploy-html',['clean:html'],function(){
+    return gulp.src(pathHtml+'**/*.html')
+    .pipe(gulp.dest(pathPubHtml));
+});
+
+
+
+gulp.task('watch-css', function(){
+    gulp.watch(pathStyles+'**/*',['deploy-css']);
+});
+gulp.task('deploy-css',function(){
+    return gulp.src(pathStyles+'**/*.css')
+    .pipe(gulp.dest(pathPubStyles));
+});
+
+
+
+gulp.task('dev',['browserify-dev','watch-html','watch-css']);
