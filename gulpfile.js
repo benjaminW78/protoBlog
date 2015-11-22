@@ -9,7 +9,7 @@ var sourcemaps = require('gulp-sourcemaps');
 var path = require('path');
 var stringify = require('stringify');
 var del = require('del');
-
+var eslint = require('eslint/lib/cli');
 
 var appPath = __dirname+"/app/";
 var pathJs = appPath+"vendors/";
@@ -18,13 +18,15 @@ var pathHtml = appPath+"views/";
 var pathStyles = appPath+"styles/";
 var pathPubStyles = appPath+"public/css/";
 var pathPubHtml = appPath+"public/html/";
-// console.log(appPath,pathJs,pathHtml);
 // Uses browserify node.js package
 function bundle(browserified, env) {
+    gulp.src(pathJs)
+    .pipe(eslint())
   browserified
     .bundle()
     .pipe(source('app.js'))
     .pipe(gulp.dest(pathPubJs));
+
 }
 
 function browserifyTask(env) {
@@ -71,6 +73,11 @@ gulp.task('clean:js', function () {
 });
 
 gulp.task('clean:css', function () {
+  return del([
+    pathPubStyles+'**/*',
+  ]);
+});
+gulp.task('esLinter', function () {
   return del([
     pathPubStyles+'**/*',
   ]);
