@@ -1,14 +1,14 @@
 
   <div class="col-lg-3 formContainer">
-    <form method="POST"   id="connect" ng-submit="connection()">
+    <form method="POST" id="connect" ng-submit="connection()">
       <h1>Connection</h1>
       <div class="form-group ">
         <label>email</label>
-        <input type="text" name="email" class="form-control" autocomplete="on" required="required" placeholder="type your email here" autofocus="on"/>
+        <input type="text" name="email" ng-model="loginForm.email" class="form-control" autocomplete="on" required="required" placeholder="type your email here" autofocus="on"/>
     </div>
     <div class="form-group ">
         <label>Password</label>
-        <input type="password"  class="form-control" name="password" autocomplete="on" required="required" placeholder="type your password here"/>
+        <input type="password"  class="form-control" name="password" ng-model="loginForm.password" autocomplete="on" required="required" placeholder="type your password here"/>
     </div>
     <button type="submit" class="btn btn-primary btn-danger" name="connectBtn" value="Submit">Submit</button>
 </form>

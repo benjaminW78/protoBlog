@@ -11,9 +11,9 @@ function sendToUser (status,message,dataObj){
     };
 
     if((dataObj!==undefined|| dataObj!==null ) && typeof dataObj === 'object')
-        obj.data = JSON.stringify(dataObj);
+        obj.kapsule = dataObj;
     else
-        obj.data = {};
+        obj.kapsule = {};
 
     return obj;
 }

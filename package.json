@@ -4,8 +4,8 @@
   "description": "app use for create blog with connection account.",
   "scripts": {
     "preinstall": "sudo apt-get install g++",
-    "startDev": "ENV_DEFINITION=development nodemon app/server/index.js",
-    "start": "nodemon app/server/index.js",
+    "dev": "ENV_DEFINITION=development nodemon app/server/index.js",
+    "start": "nodemon ./app/server/index.js",
     "test": "make test"
   },
   "repository": {
@@ -36,7 +36,7 @@
     "gulp-util": "^3.0.7",
     "lodash.assign": "^3.2.0",
     "mocha": "2.2.5",
-    "nodemon": "^1.7.2",
+    "nodemon": "^1.8.1",
     "should": "6.0.3",
     "sinon": "1.14.1",
     "stringify": "^3.1.0",

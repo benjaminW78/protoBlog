@@ -9,24 +9,38 @@ var sourcemaps = require('gulp-sourcemaps');
 var path = require('path');
 var stringify = require('stringify');
 var del = require('del');
-var eslint = require('eslint/lib/cli');
+var eslint = require('gulp-eslint');
 
 var appPath = __dirname+"/app/";
 var pathJs = appPath+"vendors/";
-var pathPubJs = "public/js/";
+var pathPubJs = appPath+"public/js/";
 var pathHtml = appPath+"views/";
 var pathStyles = appPath+"styles/";
 var pathPubStyles = appPath+"public/css/";
 var pathPubHtml = appPath+"public/html/";
+
+
 // Uses browserify node.js package
 function bundle(browserified, env) {
-    gulp.src(pathJs)
-    .pipe(eslint())
-  browserified
+    gulp.src([pathJs+'/appAngular/**/*.js'])
+    .pipe(eslint({configFile:".eslintrc.js"}))
+    .pipe(eslint.result(function (result) {
+        // Called for each ESLint result.
+        if(result.errorCount!==0){
+            console.log('ESLint result: ' + result.filePath);
+            for (var i in result.messages){
+                if(result.messages[i].severity === 2){
+                    console.log(result.messages[i]);
+                    console.log('');
+                }
+            }
+            console.log('# Errors: ' + result.errorCount);
+        }
+    }));
+    browserified
     .bundle()
     .pipe(source('app.js'))
     .pipe(gulp.dest(pathPubJs));
-
 }
 
 function browserifyTask(env) {
@@ -37,8 +51,7 @@ function browserifyTask(env) {
       debug: (env==="dev")?true:false,
       entries: [pathJs+"appAngular/main.js"],
       cache: {},
-      packageCache: {},
-      plugins:[watchify]
+      packageCache: {}
     });
 
     if (env === 'prod') {
@@ -83,8 +96,6 @@ gulp.task('esLinter', function () {
   ]);
 });
 
-// Calls browserify function
-gulp.task('browserify-dev',['clean:js'], browserifyTask('dev'));
 
 gulp.task('watch-html', function(){
     gulp.watch(pathHtml+'**/*',['deploy-html']);
@@ -93,7 +104,6 @@ gulp.task('deploy-html',['clean:html'],function(){
     return gulp.src(pathHtml+'**/*.html')
     .pipe(gulp.dest(pathPubHtml));
 });
-
 
 
 gulp.task('watch-css', function(){
@@ -105,5 +115,7 @@ gulp.task('deploy-css',function(){
 });
 
 
+// Calls browserify function
+gulp.task('browserify-dev',['clean:js'], browserifyTask('dev'));
 
 gulp.task('dev',['browserify-dev','watch-html','watch-css']);
