@@ -26,6 +26,28 @@ router.route("/api/users/:user_id")
         }
     })(req, res, next);
 });
+
+// create a session
+router.route("/login")
+.get(function(req, res, next) {
+    passport.authenticate('local-connect',function(err,user,info){
+        console.log(err,user,info);
+        if(err)
+            res.status(err.status).send(err);
+        if(user){
+            console.log("ici login call");
+            req.logIn(user,function(err,user){
+                if(err){
+                    console.log(err,'session start error');
+                }
+                handlers.user.connect(req,res);
+            });
+        }
+        else{
+            res.status(401).send(info);
+        }
+     })(req, res, next);
+ });
 // .delete(function(req,res){
 //     handlers.user.del(req,res);
 // });
