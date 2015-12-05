@@ -1,4 +1,4 @@
-var VIEWS_PATH = "/../../views";
+var VIEWS_PATH = "/../../public/html/front";
 
 var fs = require("fs"),
 express = require("express");

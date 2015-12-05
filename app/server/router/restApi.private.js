@@ -12,7 +12,12 @@ function loggedRoutes(req,res,next){
         next();
     }
 }
-
+// Log out function from session
+router.route("/api/logout")
+.get(function(req,res){
+    req.session.destroy();
+            res.status(200).send('/admin/home');
+});
 
 router.route("/api/users/:user_id")
 .get(loggedRoutes,function(req,res){

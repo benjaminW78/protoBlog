@@ -21,35 +21,37 @@ var pathPubHtml = appPath+"public/html/";
 
 
 // Uses browserify node.js package
-function bundle(browserified, env) {
-    gulp.src([pathJs+'/appAngular/**/*.js'])
-    .pipe(eslint({configFile:".eslintrc.js"}))
-    .pipe(eslint.result(function (result) {
-        // Called for each ESLint result.
-        if(result.errorCount!==0){
-            console.log('ESLint result: ' + result.filePath);
-            for (var i in result.messages){
-                if(result.messages[i].severity === 2){
-                    console.log(result.messages[i]);
-                    console.log('');
-                }
-            }
-            console.log('# Errors: ' + result.errorCount);
-        }
-    }));
+function bundle(browserified, fileDir) {
+    // gulp.src([pathJs+"/"+fileDir+'**/*.js'])
+    // .pipe(eslint({configFile:".eslintrc.js"}))
+    // .pipe(eslint.result(function (result) {
+    //     // Called for each ESLint result.
+    //     if(result.errorCount!==0){
+    //         console.log('ESLint result: ' + result.filePath);
+    //         for (var i in result.messages){
+    //             if(result.messages[i].severity === 2){
+    //                 console.log(result.messages[i]);
+    //                 console.log('');
+    //             }
+    //         }
+    //         console.log('# Errors: ' + result.errorCount);
+    //     }
+    // }));
+    fileDir =fileDir.substring(0, fileDir.length - 1);
+    var filename = 'app.'+fileDir+'.js';
+
     browserified
     .bundle()
-    .pipe(source('app.js'))
-    .pipe(gulp.dest(pathPubJs));
+    .pipe(source(filename))
+    .pipe(gulp.dest(pathPubJs+fileDir));
 }
 
-function browserifyTask(env) {
+function browserifyTask(env,fileDir) {
   return function() {
-    var file = path.resolve(pathJs+"appAngular/main.js");
     var browserified = browserify({
       basedir: appPath,
       debug: (env==="dev")?true:false,
-      entries: [pathJs+"appAngular/main.js"],
+      entries: [pathJs+"/"+fileDir+"main.js"],
       cache: {},
       packageCache: {}
     });
@@ -63,12 +65,11 @@ function browserifyTask(env) {
 
         browserified.on('update', function(event){
             console.log("rebuild js",event);
-            bundle(browserified, env);
+            bundle(browserified, fileDir);
         });
     }
-
     // browserified.transform(stringify(['.html']));
-    bundle(browserified, env);
+    bundle(browserified, fileDir);
   };
 }
 
@@ -114,8 +115,8 @@ gulp.task('deploy-css',function(){
     .pipe(gulp.dest(pathPubStyles));
 });
 
-
 // Calls browserify function
-gulp.task('browserify-dev',['clean:js'], browserifyTask('dev'));
+gulp.task('browserify-dev-front', browserifyTask('dev','front/'));
+gulp.task('browserify-dev-back',browserifyTask('dev','back/'));
 
-gulp.task('dev',['browserify-dev','watch-html','watch-css']);
+gulp.task('dev',["clean:js",'browserify-dev-front','browserify-dev-back','watch-html','watch-css']);

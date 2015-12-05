@@ -48,10 +48,6 @@ app.use(restApiPub);
 app.use(restApiPriv);
 app.use(routePub);
 app.use(routePriv);
-//server start listening
-
-// app.listen(8080);
 
 // https test
 https.createServer(options, app).listen(8000);
-// Database

@@ -1,5 +1,4 @@
 'use strict';
-
 var data = ['$scope',
             '$injector',
             function($scope, $injector) {
@@ -9,15 +8,13 @@ var data = ['$scope',
                 $scope.loginForm = {};
 
                 $scope.connection = function() {
-                    console.log(this)
                     var opts = {
                             method: 'get',
                             url: '/login',
                             getParams: $scope.loginForm,
                         },
                         successCb = function(resData) {
-                            console.log(resData, 'SUCCESS');
-                            if(resData.status === 200){
+                            if (resData.status === 200) {
                                 reRoutageServ.do(resData.data);
                             }
                         },

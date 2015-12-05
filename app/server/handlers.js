@@ -8,7 +8,7 @@ var handlers = {
         connect :function(req,res){
             // open bdd user.
             console.log("connect user "+req.isAuthenticated());
-            res.status(200).send(sendToUser('succes','redirection',{path:'/admin/home'}));
+            res.status(200).send(sendToUser('succes','redirection',{path:'/admin'}));
         },
         create  :function(req,res){
             console.log("on create un user");
