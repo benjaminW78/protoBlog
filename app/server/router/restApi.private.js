@@ -2,6 +2,8 @@ var handlers = require("../handlers.js"),
 fs = require("fs"),
 express = require("express");
 var router = express.Router();
+var sendToUser = require("../utils/sendToUser.js");
+
 
 // FUNCTION FOR VERIFY ROUTE RIGHT
 function loggedRoutes(req,res,next){
@@ -16,7 +18,7 @@ function loggedRoutes(req,res,next){
 router.route("/api/logout")
 .get(loggedRoutes,function(req,res){
     req.session.destroy();
-            res.status(200).send('/admin/home');
+            res.status(200).send(sendToUser('succes','redirection',{path:'/'}));
 });
 
 router.route("/api/users/:user_id")

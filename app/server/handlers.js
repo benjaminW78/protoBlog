@@ -47,7 +47,6 @@ var handlers = {
             res.send("EDIT A existing POST");
         },
         createPost:function(req,res){
-            console.log(req.body);
             data=req.body;
             if(data.title===undefined && data.title.length <=0){
                 res.status(422).send(sendToUser("error","title is missing"));
@@ -59,9 +58,30 @@ var handlers = {
                 res.status(422).send(sendToUser("error","content is missing"));
             }
 
-            var query = "INSERT INTO ";
-            dbCo(query,function(){});
-            res.status(200).send("CREATE A NEW POST");
+            var query = 'INSERT INTO site."blogPosts" (title, content, author_email,creation_date, summary, status, category_id) VALUES (\''+
+                data.title+'\',\''+
+                data.content+'\',\''+
+                req.user.email+'\',\''+
+                data.timeStamp+'\',\''+
+                data.summary+'\',\''+
+                data.postStatusId+'\',\''+
+                data.categoryId
+                +'\') RETURNING *;';
+            console.log(query)
+            dbCo(query,function(poolRealese,err,queryResp){
+                poolRealese(err);
+                if(err)
+                {
+                    console.log(err);
+                    res.status(400).send(sendToUser("error","error create new post."));
+                }
+                 else{
+                    if(queryResp.rowCount<=0)
+                        res.status(400).send(sendToUser("error"," impossible to create new post."));
+                    else
+                        res.status(200).send(sendToUser('success',"blog post successfully created.",{post:queryResp.rows[0]}));
+                }
+            });
         },
         getPosts:function(req,res){
             res.send("get posts");
@@ -70,30 +90,35 @@ var handlers = {
             res.send("create category");
         },
         getCategories:function(req,res){
-            var query = 'SELECT id, name FROM site."blogPostCategories";';
+            var query = 'SELECT id, name FROM site."blogPostCategories"  ORDER BY id ASC;';
             console.log(query);
-            dbCo(query,function(query,err,done){
+            dbCo(query,function(poolRealese,err,queryResp){
+                poolRealese(err);
                 if(err)
                     res.status(400).send(sendToUser("error","error get categories"));
                 else{
-                    if(done.rowCount<=0)
+                    console.log(queryResp.rows)
+                    if(queryResp.rowCount<=0)
                         res.status(400).send(sendToUser("error"," no categories found."));
                     else
-                        res.status(200).send(sendToUser('success',"categories found",{categories:done.rows}));
+                        res.status(200).send(sendToUser('success',"categories found",{categories:queryResp.rows}));
                 }
             });
         },
         getPostStatus:function(req,res){
-            var query = 'SELECT id, name FROM site."blogPostStatus";';
+            var query = 'SELECT id, name FROM site."blogPostStatus" ORDER BY id ASC;';
             console.log(query);
-            dbCo(query,function(query,err,done){
+            dbCo(query,function(poolRealese,err,queryResp){
+                poolRealese(err);
                 if(err)
                     res.status(400).send(sendToUser("error","error get blogPostStatus"));
-
-                if(done.rowCount<=0)
-                    res.status(400).send(sendToUser("error"," no categories found."));
-                else
-                    res.status(200).send(sendToUser('success',"categories found",{categories:done.rows}));
+                else{
+                    console.log(queryResp.rows)
+                    if(queryResp.rowCount<=0)
+                        res.status(400).send(sendToUser("error"," no categories found."));
+                    else
+                        res.status(200).send(sendToUser('success',"categories found",{postStatus:queryResp.rows}));
+                }
             });
         }
     }

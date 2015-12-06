@@ -1,43 +1,32 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-  <title>create Blog Post Page</title>
 
-  <!-- Bootstrap -->
-  <link href="/vendors/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="/css/form.css" rel="stylesheet">
-
-</head>
-<body>
-<button class="btn red" id="logout">Log me out</button>
 
 <div class="col-lg-3 formContainer">
-  <form method="POST" id="register"  data-url="/api/blogPosts">
+  <form method="POST" id="blogPostForm" ng-submit="createBlogPost()" >
     <h1>create blog post</h1>
      <div class="form-group ">
         <label>Title</label>
-        <input type="text" name="title" class="form-control"  autocomplete="on" required="required" placeholder="type title post" autofocus="on"/>
+        <input type="text" name="title" class="form-control" ng-model="blogPostForm.title"  autocomplete="on" required="required" placeholder="type title post" autofocus="on"/>
+    </div>
+    <div class="form-group">
+        <label>select category for blog Post</label>
+        <select name='categories' ng-model="blogPostForm.categoryId" >
+            <option ng-repeat="categ in categories" value='{{categ.id}}'>{{categ.name}}</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label>select blog post status</label>
+        <select name='post status' ng-model="blogPostForm.postStatusId" ng-init="blogPostForm.postStatusId=1">
+            <option ng-repeat="post in postStatus" value='{{post.id}}'>{{post.name}}</option>
+        </select>
     </div>
     <div class="form-group ">
         <label>summary of this blog Post</label>
-        <input type="text" name="summary" class="form-control" autocomplete="on" required="required" placeholder="type blog post summary" autofocus="on"/>
+        <input type="text" name="summary" class="form-control" ng-model="blogPostForm.summary" autocomplete="on" required="required" placeholder="type blog post summary" autofocus="on"/>
     </div>
     <div class="form-group ">
         <label>Content</label>
-        <textarea name="content" class="form-control" rows="5" cols="30" autocomplete="off" required="required" placeholder="blog post there" autofocus="on"></textarea>
+        <textarea name="content" class="form-control" rows="5" cols="30" ng-model="blogPostForm.content" autocomplete="off" required="required" placeholder="blog post there" autofocus="on"></textarea>
     </div>
     <button type="submit" class="btn btn-success" >blogPost</button>
 </form>
 </div>
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script type="text/javascript" src="/vendors/jquery.min.js" ></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script type="text/javascript" src="/vendors/bootstrap/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="/vendors/logout.js" ></script>
-    <script type="text/javascript" src="/vendors/sendToServer.js" ></script>
-</body>
-</html>

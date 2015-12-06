@@ -35,7 +35,6 @@ router.route("/login")
         if(err)
             res.status(err.status).send(err);
         if(user){
-            console.log("ici login call");
             req.logIn(user,function(err,user){
                 if(err){
                     console.log(err,'session start error');

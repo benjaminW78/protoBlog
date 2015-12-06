@@ -9,12 +9,11 @@ var data = function() {
             function($scope,$injector) {
                 var proxyServ = $injector.get('proxy'),
                     reRoutageServ = $injector.get('reRoutage');
-                  $scope.logOut = function(el) {
-                    console.log(arguments);
+                  $scope.logOut = function(urlParam) {
+                    console.log(arguments)
                         var opts = {
                             method: 'get',
-                            url:"" ,
-                            getParams: $scope.loginForm,
+                            url:urlParam ,
                         },
                         successCb = function(resData) {
                             if (resData.status === 200) {
@@ -24,6 +23,7 @@ var data = function() {
                         errorCb = function(resData) {
                             console.log(resData, 'ERROR');
                         };
+                    proxyServ.send(opts).then(successCb, errorCb);
                   };
             }],
             templateUrl: '/html/back/directives/logout.directive.html',

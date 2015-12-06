@@ -14,7 +14,7 @@ var sendToUser = require("../utils/sendToUser.js");
 function loggedRoutes(req,res,next){
     console.log("req",req.isAuthenticated(),req.path,req.url);
     if(!req.isAuthenticated())
-        res.status(401).redirect(sendToUser('succes','redirection',{path:'/admin'}));
+        res.status(401).redirect(sendToUser('succes','redirection',{path:'/'}));
     else{
         next();
     }

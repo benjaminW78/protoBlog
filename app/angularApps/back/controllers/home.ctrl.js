@@ -21,7 +21,7 @@ var data = ['$scope',
                         errorCb = function(resData) {
                             console.log(resData, 'ERROR');
                         };
-                    proxyServ.send(opts, successCb, errorCb);
+                    proxyServ.send(opts).then(successCb, errorCb);
                 };
             }];
 
