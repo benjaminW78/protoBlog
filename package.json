@@ -4,7 +4,7 @@
   "description": "app use for create blog with connection account.",
   "scripts": {
     "preinstall": "sudo apt-get install g++",
-    "dev": "ENV_DEFINITION=development nodemon app/server/index.js",
+    "dev": "ENV_DEFINITION=development nodemon --watch app/server/ app/server/index.js",
     "start": "nodemon ./app/server/index.js",
     "test": "make test"
   },
