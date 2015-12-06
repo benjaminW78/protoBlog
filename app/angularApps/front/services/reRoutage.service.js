@@ -1,4 +1,4 @@
-var data = ['$location', function($location) {
+var data = [ function() {
     this.do = function reroute(myData) {
         if (typeof typeof myData !== 'object' && !myData) {
             throw new Error('error myData = ' + typeof myData + ' reRoutage');

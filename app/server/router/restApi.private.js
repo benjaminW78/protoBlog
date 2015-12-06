@@ -14,7 +14,7 @@ function loggedRoutes(req,res,next){
 }
 // Log out function from session
 router.route("/api/logout")
-.get(function(req,res){
+.get(loggedRoutes,function(req,res){
     req.session.destroy();
             res.status(200).send('/admin/home');
 });

@@ -1,5 +1,5 @@
 var conf = require('./conf.js'),
-ENV = require('../env.js'),
+ENV = require('../utils/env.js'),
 dbConf = conf[ENV],
 pg = require('pg');
 

@@ -7,7 +7,7 @@ var passport = require("passport");
 var passportId = require("../passportStrategies/passportIdentification.js");
 var passportReg = require("../passportStrategies/passportRegistration.js");
 var VIEWS_PATH = "/../../public/html/back";
-var sendToUser = require("../sendToUser.js");
+var sendToUser = require("../utils/sendToUser.js");
 
 
 // FUNCTION FOR VERIFY ROUTE RIGHT

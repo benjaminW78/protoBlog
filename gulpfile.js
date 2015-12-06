@@ -12,9 +12,9 @@ var del = require('del');
 var eslint = require('gulp-eslint');
 
 var appPath = __dirname+"/app/";
-var pathJs = appPath+"vendors/";
+var pathJs = appPath+"angularApps/";
 var pathPubJs = appPath+"public/js/";
-var pathHtml = appPath+"views/";
+var pathHtml = appPath+"angularViews/";
 var pathStyles = appPath+"styles/";
 var pathPubStyles = appPath+"public/css/";
 var pathPubHtml = appPath+"public/html/";
@@ -51,21 +51,24 @@ function browserifyTask(env,fileDir) {
     var browserified = browserify({
       basedir: appPath,
       debug: (env==="dev")?true:false,
-      entries: [pathJs+"/"+fileDir+"main.js"],
+      entries: [pathJs+fileDir+"main.js"],
       cache: {},
       packageCache: {}
     });
-
     if (env === 'prod') {
       browserified.transform({global: true}, 'uglifyify');
     }
     if (env === 'dev') {
         browserified = watchify(browserified);// Englob browserify inside whatchify
-        browserified.on('log', gutil.log); // output build logs to terminal
+        browserified.on('log',function (err) {
+            gutil.log(err.toString());
+            this.emit('end');
+        }); // output build logs to terminal
 
         browserified.on('update', function(event){
             console.log("rebuild js",event);
             bundle(browserified, fileDir);
+            this.emit('end');
         });
     }
     // browserified.transform(stringify(['.html']));
@@ -117,6 +120,6 @@ gulp.task('deploy-css',function(){
 
 // Calls browserify function
 gulp.task('browserify-dev-front', browserifyTask('dev','front/'));
-gulp.task('browserify-dev-back',browserifyTask('dev','back/'));
+gulp.task('browserify-dev-back', browserifyTask('dev','back/'));
 
 gulp.task('dev',["clean:js",'browserify-dev-front','browserify-dev-back','watch-html','watch-css']);

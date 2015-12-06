@@ -1,7 +1,7 @@
 var fs = require("fs");
 var https = require("https");
 var dbCo = require("./db/dbConnection.js");
-var sendToUser = require("./sendToUser.js");
+var sendToUser = require("./utils/sendToUser.js");
 
 var handlers = {
     user:{
