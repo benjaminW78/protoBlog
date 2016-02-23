@@ -84,7 +84,23 @@ var handlers = {
             });
         },
         getPosts:function(req,res){
-            res.send("get posts");
+
+            var query = 'SELECT * INTO site."blogPosts" WHERE status="1"';
+            console.log(query);
+            dbCo(query,function(poolRealese,err,queryResp){
+                poolRealese(err);
+                if(err)
+                {
+                    console.log(err);
+                    res.status(400).send(sendToUser("error","error create new post."));
+                }
+                 else{
+                    if(queryResp.rowCount<=0)
+                        res.status(400).send(sendToUser("error"," impossible to create new post."));
+                    else
+                        res.status(200).send(sendToUser('success',"blog post successfully created.",queryResp.rows));
+                }
+            });
         },
         createBlogCategory:function(req,res){
             res.send("create category");
