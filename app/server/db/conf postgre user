@@ -15,6 +15,35 @@ GRANT CONNECT, TEMPORARY ON DATABASE bwinckellsite TO public;
 GRANT ALL ON DATABASE bwinckellsite TO postgres;
 GRANT ALL ON DATABASE bwinckellsite TO blogsite;
 
+-- Table: site."blogPosts"
+
+-- DROP TABLE site."blogPosts";
+
+CREATE TABLE site."blogPosts"
+(
+  title character varying(280) COLLATE pg_catalog."C.UTF-8" NOT NULL,
+  content text COLLATE pg_catalog."C.UTF-8" NOT NULL,
+  id serial NOT NULL,
+  creation_date timestamp with time zone,
+  author_email text COLLATE pg_catalog."C.UTF-8",
+  status integer,
+  summary character varying(280) COLLATE pg_catalog."C.UTF-8",
+  category_id integer,
+  CONSTRAINT "blogPosts_pkey" PRIMARY KEY (id),
+  CONSTRAINT "blogPosts_author_email_fkey" FOREIGN KEY (author_email)
+      REFERENCES site.users (email) MATCH SIMPLE
+      ON UPDATE CASCADE ON DELETE NO ACTION,
+  CONSTRAINT "blogPosts_category_id_fkey" FOREIGN KEY (category_id)
+      REFERENCES site."blogPostCategories" (id) MATCH SIMPLE
+      ON UPDATE CASCADE ON DELETE RESTRICT
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE site."blogPosts"
+  OWNER TO blogsite;
+
+
 -- Schema: site
 
 -- DROP SCHEMA site;
@@ -143,4 +172,57 @@ WITH (
   OIDS=FALSE
 );
 ALTER TABLE site.users
+  OWNER TO blogsite;
+
+
+-- Table: site."blogPostCategories"
+
+-- DROP TABLE site."blogPostCategories";
+
+CREATE TABLE site."blogPostCategories"
+(
+  id serial NOT NULL,
+  name character varying(30) COLLATE pg_catalog."C.UTF-8" NOT NULL,
+  CONSTRAINT "blogPostCategories_pkey" PRIMARY KEY (id)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE site."blogPostCategories"
+  OWNER TO blogsite;
+
+
+-- Table: site."blogPostStatus"
+
+-- DROP TABLE site."blogPostStatus";
+
+CREATE TABLE site."blogPostStatus"
+(
+  id serial NOT NULL,
+  name character varying(30) COLLATE pg_catalog."C.UTF-8",
+  CONSTRAINT "blogPostStatus_pkey" PRIMARY KEY (id)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE site."blogPostStatus"
+  OWNER TO blogsite;
+
+
+-- Table: site."blogPostTag"
+
+-- DROP TABLE site."blogPostTag";
+
+CREATE TABLE site."blogPostTag"
+(
+  tag character varying(30),
+  post_id integer,
+  CONSTRAINT "blogPostTag_post_id_fkey" FOREIGN KEY (post_id)
+      REFERENCES site."blogPosts" (id) MATCH SIMPLE
+      ON UPDATE CASCADE ON DELETE CASCADE
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE site."blogPostTag"
   OWNER TO blogsite;
