@@ -6,7 +6,7 @@ var app = '';
 require('../jquery.min.js');
 
 angular = require('angular');
-app = angular.module( 'Back', [require('angular-route')]);
+app = angular.module( 'Back', [require("ng-file-upload"),require('angular-route')]);
 app.constant("moment", require("moment-timezone"));
 
 require('./services');

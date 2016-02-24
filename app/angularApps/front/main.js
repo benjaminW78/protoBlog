@@ -10,7 +10,6 @@ app = angular.module( 'Front', [require('angular-route')]);
 
     require('./services');
     require('./controllers');
-    require('./directives');
 
 app.config(function($routeProvider) {
     $routeProvider
