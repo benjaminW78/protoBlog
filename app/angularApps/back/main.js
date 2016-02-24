@@ -26,6 +26,10 @@ app.config(function($routeProvider) {
         templateUrl: '/html/back/createBlogPost.html',
         controller: 'createBlogPostCtrl',
     })
+    .when('/uploadImages', {
+        templateUrl: '/html/back/uploadImages.html',
+        controller: 'uploadImagesCtrl',
+    })
     .otherwise({
         redirectTo: '/',
     });

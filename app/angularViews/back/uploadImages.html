@@ -1,0 +1,18 @@
+
+
+<div class="col-lg-3 formContainer">
+  <form method="POST" id="imgUploadForm" ng-submit="storeImages()" >
+    <h1>Upload images</h1>
+     <div class="form-group">
+        <label>description</label>
+        <select name='post status' ng-model="imgUploadForm.postStatusId" ng-init="imgUploadForm.postStatusId=1">
+            <option ng-repeat="post in postStatus" value='{{post.id}}'>{{post.name}}</option>
+        </select>
+    </div>
+    <div class="form-group ">
+        <label>Content</label>
+        <input type='file' allow-dir="false"  ng-multiple="false" ng-accept=".jpg,.png,.gif,.jpeg" ng-model="imgUploadForm.files">
+    </div>
+    <button type="submit" class="btn btn-success" >blogPost</button>
+</form>
+</div>
