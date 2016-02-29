@@ -55,6 +55,7 @@
     "browserify": "10.2.1",
     "cookie-parser": "^1.4.0",
     "express-session": "^1.11.3",
+    "formidable": "^1.0.17",
     "jquery": "2.1.4",
     "jsonwebtoken": "^5.4.0",
     "marked": "^0.3.5",
@@ -64,6 +65,7 @@
     "passport": "^0.2.2",
     "passport-local": "^1.0.0",
     "pg": "^4.4.2",
+    "pg-large-object": "^1.0.1",
     "serve-static": "^1.10.0"
   }
 }

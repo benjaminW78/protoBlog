@@ -18,7 +18,7 @@ var connection = function(query, callback){
             // In this case, if we have successfully received a client (truthy)
             // then it will be removed from the pool.
             if(client){
-                done(client);
+               done(client);
             }
             res.writeHead(500, {'content-type': 'text/plain'});
             res.end('An error occurred');
@@ -29,6 +29,6 @@ var connection = function(query, callback){
 
         client.query(query,callback.bind(this,done));
     });
-} 
+}
 
 module.exports = connection;

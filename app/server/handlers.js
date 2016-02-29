@@ -1,8 +1,10 @@
 var fs = require("fs");
 var https = require("https");
 var dbCo = require("./db/dbConnection.js");
+var dbLaCo = require("./db/dbLargeObjectConnection.js");
+var formidable = require("formidable");
 var sendToUser = require("./utils/sendToUser.js");
-
+var util = require('util');
 var handlers = {
     user:{
         connect :function(req,res){
@@ -138,16 +140,43 @@ var handlers = {
             });
         },
         uploadImages:function(req,res){
-            console.log(req.files);
-            var fstream;
-            req.pipe(req.busboy);
-            req.busboy.on('file', function (fieldname, file, filename) {
-                console.log("Uploading: " + filename); 
-                fstream = fs.createWriteStream(__dirname + '/files/' + filename);
-                file.pipe(fstream);
-                fstream.on('close', function () {
-                    res.redirect('back');
+            console.log('zdpjazkpdjazpdjazpodj');
+
+            var form = new formidable.IncomingForm();
+            form.encoding = 'utf-8';
+            form.keepExtensions = true;
+            form.type="multipart";
+            form.multiples = true;
+            form.parse(req, function(err,fields, files) {
+                var arrFiles = Object.keys(files).map(function (key) {return files[key]});
+
+                // console.log('test',fields,files);
+                dbLaCo.save(arrFiles[0],function(oid){
+                    // console.log('ici c"est done ',oid);
+                    var query = 'INSERT INTO site."images" (img_name,data_type,description,creation_date,oid) VALUES (\''+
+                        arrFiles[0].name+'\',\''+
+                        arrFiles[0].type+'\',\''+
+                        fields.description+'\',DEFAULT,\''+
+                        oid+'\')';
+
+                    dbCo(query,function(poolRealese,err,queryResp){
+                        console.log('arguments de SAVE DB',arguments)
+                        poolRealese(err);
+                        if(err)
+                            res.status(400).send(sendToUser("error","error get blogPostStatus"));
+                        else{
+                            console.log(queryResp.rows)
+                            if(queryResp.rowCount<=0)
+                                res.status(400).send(sendToUser("error"," no categories found."));
+                            else{
+
+                                // res.end(util.inspect({fields: fields, files: files}));
+                                res.status(200).send(sendToUser('success',"File successfully uploaded",{postStatus:queryResp.rows}));
+                            }
+                        }
+                    })
                 });
+
             });
         }
     }

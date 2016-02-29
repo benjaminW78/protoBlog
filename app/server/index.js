@@ -34,7 +34,7 @@ app.use("/js/",serveStatic(app_root+"/../public/js/"));
 app.use("/css/",serveStatic(app_root+"/../public/css/"));
 app.use("/html/",serveStatic(app_root+"/../public/html/"));
 
-app.use(expressSession({ secret: 'supercalifragilisticexpialidocious' }));
+app.use(expressSession({ secret: 'supercalifragilisticexpialidocious', resave: false, saveUninitialized: true }));
 app.use(cookieParser('supercalifragilisticexpialidocious'));
 
 //start passport setting
