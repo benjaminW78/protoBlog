@@ -12,8 +12,10 @@ var data = ['$scope',
                     if (files && files.length) {
                         Upload.upload({
                             url: '/api/uploadImages',
+                            type:'post',
                             data: {
-                                files: files
+                                files: files,
+                                description:'test'
                             }
                         }).then(function (response) {
                             $timeout(function () {
