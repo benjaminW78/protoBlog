@@ -5,6 +5,7 @@ var data = ['$scope',
                 var proxyServ = $injector.get('proxy'),
                     Upload = $injector.get('Upload'),
                     $timeout = $injector.get('$timeout'),
+                    notify = $injector.get('notify'),
                     moment = $injector.get('moment');
 
                 $scope.uploadFiles = function (files) {

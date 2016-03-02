@@ -163,11 +163,10 @@ var handlers = {
                         console.log('arguments de SAVE DB',arguments)
                         poolRealese(err);
                         if(err)
-                            res.status(400).send(sendToUser("error","error get blogPostStatus"));
+                            res.status(400).send(sendToUser("error","error upload image"));
                         else{
-                            console.log(queryResp.rows)
                             if(queryResp.rowCount<=0)
-                                res.status(400).send(sendToUser("error"," no categories found."));
+                                res.status(400).send(sendToUser("error"," error upload image."));
                             else{
 
                                 // res.end(util.inspect({fields: fields, files: files}));
