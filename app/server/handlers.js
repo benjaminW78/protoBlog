@@ -181,7 +181,7 @@ var handlers = {
                 if(err||queryResp.rowCount<=0)
                     res.status(400).send(sendToUser("error"," Image not found."));
                 else{
-                    res.status(200).send(sendToUser('success',"File successfully uploaded",queryResp.rows));
+                    res.status(200).send(sendToUser('success',"all images data send ",queryResp.rows));
                 }
             });
         },
