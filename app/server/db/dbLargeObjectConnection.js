@@ -53,7 +53,7 @@ var connection = {
             });
         });
     },
-    load:function(data,callback){
+    load:function(data,res){
         this.request({
             method:'load',
             oid:data.oid,
@@ -67,12 +67,10 @@ var connection = {
                 console.log('Streaming a large object with a total size of ', size);
                 stream.on('end', function()
                 {
-                            client.query('COMMIT',callback.bind(this,fileStream));
                             done();
                 });
-                var fileStream = require('fs').createWriteStream('/tmp/'+data.name);
                 // Store it as an image
-                stream.pipe(fileStream);
+                stream.pipe(res);
            }
         });
     },

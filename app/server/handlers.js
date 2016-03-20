@@ -186,19 +186,7 @@ var handlers = {
                        obj.description = queryResp.rows[0].description;
                        obj.data_type = queryResp.rows[0].data_type;
                        obj.oid = queryResp.rows[0].oid;
-                       dbLaCo.load(obj,function(dataStream){
-                            fs.readFile(dataStream.path, function (err, data ) {
-                                if(err){
-                                    console.log(err);
-                                    return;
-                                }
-                                else{
-                                    res.write(data);
-                                    res.end();
-                                    fs.unlink(dataStream.path);
-                                }
-                            });
-                       });
+                       dbLaCo.load(obj,res);
                     }
             });
 
