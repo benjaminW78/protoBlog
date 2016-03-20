@@ -54,4 +54,10 @@ router.route("/api/blogPosts")
 .get(function(req,res){
     handlers.blog.getPosts(req,res);
 });
+
+router.route("/api/images/:oid")
+.get(function(req,res){
+    handlers.blog.getImageByUid(req,res);
+});
+
 module.exports = router;

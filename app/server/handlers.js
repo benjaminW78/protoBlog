@@ -1,8 +1,12 @@
 var fs = require("fs");
 var https = require("https");
 var dbCo = require("./db/dbConnection.js");
+var dbLaCo = require("./db/dbLargeObjectConnection.js");
+var formidable = require("formidable");
 var sendToUser = require("./utils/sendToUser.js");
-
+var util = require('util');
+var base64 = require('base64-stream');
+var btoa = require('btoa');
 var handlers = {
     user:{
         connect :function(req,res){
@@ -47,7 +51,7 @@ var handlers = {
             res.send("EDIT A existing POST");
         },
         createPost:function(req,res){
-            data=req.body;
+            var data=req.body;
             if(data.title===undefined && data.title.length <=0){
                 res.status(422).send(sendToUser("error","title is missing"));
             }
@@ -136,6 +140,56 @@ var handlers = {
                         res.status(200).send(sendToUser('success',"categories found",{postStatus:queryResp.rows}));
                 }
             });
+        },
+        uploadImages:function(req,res){
+            var form = new formidable.IncomingForm();
+            form.encoding = 'utf-8';
+            form.keepExtensions = true;
+            form.type="multipart";
+            form.multiples = true;
+            form.parse(req, function(err,fields, files) {
+                var arrFiles = Object.keys(files).map(function (key) {return files[key]});
+                dbLaCo.save(arrFiles[0],function(oid){
+                    var query = 'INSERT INTO site."images" (img_name,data_type,description,creation_date,oid) VALUES (\''+
+                        arrFiles[0].name+'\',\''+
+                        arrFiles[0].type+'\',\''+
+                        fields.description+'\',DEFAULT,\''+
+                        oid+'\')';
+
+                    dbCo(query,function(poolRealese,err,queryResp){
+                        poolRealese(err);
+                        if(err)
+                            res.status(400).send(sendToUser("error","error upload image"));
+                        else{
+                            if(queryResp.rowCount<=0)
+                                res.status(400).send(sendToUser("error"," error upload image."));
+                            else{
+                                res.status(200).send(sendToUser('success',"File successfully uploaded",{postStatus:queryResp.rows}));
+                            }
+                        }
+                    })
+                });
+
+            });
+        },
+        getImageByUid:function(req,res){
+            var data = req.params,
+                obj = {},
+                query = 'SELECT img_name, data_type, description, oid FROM site."images" WHERE oid='+data.oid+';';
+
+            dbCo(query,function(poolRealese,err,queryResp){
+                poolRealese(err);
+                if(err||queryResp.rowCount<=0)
+                    res.status(400).send(sendToUser("error"," Image not found."));
+                else{
+                       obj.name = queryResp.rows[0].img_name;
+                       obj.description = queryResp.rows[0].description;
+                       obj.data_type = queryResp.rows[0].data_type;
+                       obj.oid = queryResp.rows[0].oid;
+                       dbLaCo.load(obj,res);
+                    }
+            });
+
         }
     }
 };

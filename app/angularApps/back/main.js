@@ -6,8 +6,10 @@ var app = '';
 require('../jquery.min.js');
 
 angular = require('angular');
-app = angular.module( 'Back', [require('angular-route')]);
+app = angular.module( 'Back', [require("ng-file-upload"),require('angular-route')]);
+
 app.constant("moment", require("moment-timezone"));
+app.constant("notify", require("bootstrap-notify"));
 
 require('./services');
 require('./controllers');
@@ -25,6 +27,10 @@ app.config(function($routeProvider) {
     .when('/createBlogPost', {
         templateUrl: '/html/back/createBlogPost.html',
         controller: 'createBlogPostCtrl',
+    })
+    .when('/uploadImages', {
+        templateUrl: '/html/back/uploadImages.html',
+        controller: 'uploadImagesCtrl',
     })
     .otherwise({
         redirectTo: '/',

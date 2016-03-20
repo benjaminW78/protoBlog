@@ -3,20 +3,21 @@
 var angular = '';
 var app = '';
 
-require('../jquery.min.js');
+
+window.jQuery=window.$ = require('../jquery.min.js')
 
 angular = require('angular');
 app = angular.module( 'Front', [require('angular-route')]);
 
     require('./services');
     require('./controllers');
-    require('./directives');
 
 app.config(function($routeProvider) {
     $routeProvider
     // route for the home page
     .when('/', {
         templateUrl: '/html/front/home.html',
+        controller: 'homeCtrl',
     })
 
     // route for the about page

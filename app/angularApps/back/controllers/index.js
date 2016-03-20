@@ -3,6 +3,7 @@
 var app = require('angular').module('Back');
 app.controller('homeCtrl', require('./home.ctrl.js'));
 app.controller('createBlogPostCtrl', require('./createBlogPost.ctrl.js'));
+app.controller('uploadImagesCtrl', require('./uploadImages.ctrl.js'));
 // app.controller('FooterCtrl', require('./footer'));
 // app.controller('TodoCtrl', require('./todo'));
 // app.controller('TodoListCtrl', require('./todo_list'));
