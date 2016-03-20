@@ -1,0 +1,16 @@
+<button ng-click="getAllFiles()">show All Images</button>
+    <script type="text/ng-template" id="myModalContent.html">
+    <div class="modal-header">
+        <h3 class="modal-title">I'm a modal!</h3>
+    </div>
+    <div class="modal-body">
+        <ul ng-repeat="img in imgArray">
+            <input type="checkbox"><label>{{img.img_name}}</label><img  sizes="(max-width: 600px) 200px" src="/api/images/{{img.oid}}" ></input>
+        </ul>
+          Selected: <b>{{ selected.item }}</b>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+        <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+    </div>
+    </script >
