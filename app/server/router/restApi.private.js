@@ -51,7 +51,7 @@ router.route("/api/postStatus")
 .get(loggedRoutes,function(req,res){
     handlers.blog.getPostStatus(req,res);
 });
-router.route("/api/uploadImages")
+router.route("/api/images")
 .post(loggedRoutes,function(req,res){
     handlers.blog.uploadImages(req,res);
 });

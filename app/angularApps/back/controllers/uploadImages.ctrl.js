@@ -12,7 +12,7 @@ var data = ['$scope',
                     $scope.files = files;
                     if (files && files.length) {
                         Upload.upload({
-                            url: '/api/uploadImages',
+                            url: '/api/images',
                             type:'post',
                             data: {
                                 files: files,

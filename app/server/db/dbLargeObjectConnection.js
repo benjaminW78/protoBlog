@@ -44,18 +44,19 @@ var connection = {
                 // If you are on a high latency connection and working with
                 // large LargeObjects, you should increase the buffer size
                 var bufferSize = 16384;
-                if(obj.method ==='load')
-                    man.openAndReadableStream(obj.oid,bufferSize,obj.cb.bind(this,done,client));
+                if(obj.method ==='load'){
+                        man.openAndReadableStream(obj.oid,bufferSize,obj.cb.bind(this,done,client));
+                }
                 else if(obj.method ==='write')
                     man.createAndWritableStream(bufferSize,obj.cb.bind(this,done,client));
 
             });
         });
     },
-    load:function(oid,callback){
+    load:function(data,callback){
         this.request({
             method:'load',
-            oid:oid,
+            oid:data.oid,
             cb:function(done,client,err, size, stream)
             {
                 if (err)
@@ -66,11 +67,11 @@ var connection = {
                 console.log('Streaming a large object with a total size of ', size);
                 stream.on('end', function()
                 {
-                            done();
                             client.query('COMMIT',callback.bind(this,fileStream));
+                            done();
                 });
+                var fileStream = require('fs').createWriteStream('/tmp/'+data.name);
                 // Store it as an image
-                var fileStream = require('fs').createWriteStream('my-file.png');
                 stream.pipe(fileStream);
            }
         });
@@ -80,7 +81,6 @@ var connection = {
             method:'write',
             cb:function(done,client,err, oid, stream)
             {
-                // console.log(arguments)
                 if (err)
                 {
                         done(err);
@@ -94,12 +94,11 @@ var connection = {
                         // Actual writing of the large object in DB may
                         // take some time, so one should provide a
                         // callback to client.query.
-                        done();
                         client.query('COMMIT',callback.bind(this,oid));
+                        done();
                 });
-
-                // Upload an image
                 var fileStream = require('fs').createReadStream(file.path);
+                // Upload an image
                 fileStream.pipe(stream);
             }
         });
