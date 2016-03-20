@@ -1,0 +1,24 @@
+#!/bin/bash
+# to see how this hook program will handle hook chaining go to this link : http://stackoverflow.com/a/8734391
+# author: orefalo
+
+hookname=`basename $0`
+
+
+FILE=`mktemp`
+trap 'rm -f $FILE' EXIT
+cat - > $FILE
+
+for hook in $GIT_DIR/hooks/$hookname.*
+do
+    if test -x "$hook"; then
+#       echo $hook
+        cat $FILE | $hook "$@"
+        status=$?
+
+        if test $status -ne 0; then
+            echo Hook $hook failed with error code $status
+            exit $status
+        fi
+    fi
+done

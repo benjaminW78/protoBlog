@@ -1,0 +1,11 @@
+#!/bin/bash
+# created by WINCKELL Benjamin .
+source ../toolsScript/logHook.sh
+source ../toolsScript/check_and_run.sh
+
+log_start
+
+
+check_run package.js "npm install"
+
+log_end
