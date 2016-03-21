@@ -40,14 +40,26 @@ var data = ['$scope',
                     proxyServ.send(opts).then(successCb, errorCb);
                 })();
 
+                $scope.insertSelectedImages =function(){
+                    var cursorPos = $('textarea[name="content"]').prop("selectionStart");
+                    var v = $('textarea[name="content"]').val();
+                    var textBefore = v.substring(0,  cursorPos);
+                    var textAfter  = v.substring(cursorPos, v.length);
+                    $('textarea[name="content"]').val(textBefore + '<img src="/api/images/'+$scope.imgSelected.oid+'">' + textAfter);
+                };
 
                 $scope.createBlogPost = function() {
                     console.log($scope.blogPostForm);
                     $scope.blogPostForm.timeStamp = moment();
+                    var objClone = $.extend( objClone, $scope.blogPostForm); ;
+                    for (var i in objClone){
+                        if(i!=='timeStamp')
+                        objClone[i] = escape(objClone[i]);
+                    }
                     var opts = {
                             method: 'post',
                             url: '/api/blogPosts',
-                            data: $scope.blogPostForm,
+                            data: objClone,
                         },
                         successCb = function(resData) {
                             if (resData.status === 200) {
