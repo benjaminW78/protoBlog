@@ -10,6 +10,7 @@ app = angular.module( 'Back', [require("ng-file-upload"),require('angular-route'
 
 app.constant("moment", require("moment-timezone"));
 app.constant("notify", require("bootstrap-notify"));
+app.constant("$",require('../jquery.min.js'));
 
 require('./services');
 require('./controllers');

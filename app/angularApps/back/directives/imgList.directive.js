@@ -2,7 +2,7 @@
 var data = function($injector){
     var proxyServ = $injector.get('proxy');
     var $uibModal = $injector.get('$uibModal');
-    
+
     return {restrict: 'E',
             link:
             function(scope) {
@@ -25,11 +25,9 @@ var data = function($injector){
                         proxyServ.send(opts).then(successCb,errorCb);
                     };
                     scope.doSelect= function(img){
-                        if(!scope.imgSelected[img.oid]){
-                            scope.imgSelected[img.oid] = img;
-                        }else{
-                        delete scope.imgSelected[img.oid];
-                        }
+                            scope.imgSelected = null;
+                            scope.imgSelected = img;
+                            scope.ok();
                     }
                     scope.open = function (size) {
 
@@ -45,19 +43,12 @@ var data = function($injector){
                                 }
                             }
                         });
-
                         scope.ok = function () {
-                            modalInstance.close(scope.selected.item);
+                            modalInstance.close();
                         };
                         scope.cancel = function () {
                             modalInstance.dismiss('cancel');
                         };
-                        modalInstance.result.then(function (selectedItem) {
-                          scope.selected = selectedItem;
-                        }, function () {
-                          console.log('Modal dismissed at: ' + new Date());
-                        });
-
                     };
             },
             templateUrl: '/html/back/directives/imgList.directive.html',

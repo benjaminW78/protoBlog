@@ -3,6 +3,7 @@ var data = ['$scope',
             '$injector',
             function($scope, $injector) {
                 var proxyServ = $injector.get('proxy'),
+                    $ = $injector.get('$'),
                     moment = $injector.get('moment');
 
                 $scope.blogPostForm = {};
