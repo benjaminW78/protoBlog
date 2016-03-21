@@ -26,23 +26,30 @@ var data = function($injector){
                     scope.open = function (size) {
 
                         var modalInstance = $uibModal.open({
-                          bindToController: true,
-                          scope:scope,
-                          templateUrl: 'myModalContent.html',
-                          animation: false,
-                          size: size,
-                          resolve: {
-                            imgArray: function () {
-                              return scope.imgArray;
+                            bindToController: true,
+                            scope:scope,
+                            templateUrl: 'myModalContent.html',
+                            animation: false,
+                            size: size,
+                            resolve: {
+                                imgArray: function () {
+                                  return scope.imgArray;
+                                }
                             }
-                          }
                         });
 
+                        scope.ok = function () {
+                            modalInstance.close(scope.selected.item);
+                        };
+                        scope.cancel = function () {
+                            modalInstance.dismiss('cancel');
+                        };
                         modalInstance.result.then(function (selectedItem) {
                           scope.selected = selectedItem;
                         }, function () {
                           console.log('Modal dismissed at: ' + new Date());
                         });
+
                     };
             },
             templateUrl: '/html/back/directives/imgList.directive.html',
