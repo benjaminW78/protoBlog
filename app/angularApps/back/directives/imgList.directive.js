@@ -2,9 +2,11 @@
 var data = function($injector){
     var proxyServ = $injector.get('proxy');
     var $uibModal = $injector.get('$uibModal');
+    
     return {restrict: 'E',
             link:
             function(scope) {
+                    scope.imgSelected={};
                     scope.imgArray;
                     scope.getAllFiles = function ($) {
                        var opts = {
@@ -22,7 +24,13 @@ var data = function($injector){
                         };
                         proxyServ.send(opts).then(successCb,errorCb);
                     };
-
+                    scope.doSelect= function(img){
+                        if(!scope.imgSelected[img.oid]){
+                            scope.imgSelected[img.oid] = img;
+                        }else{
+                        delete scope.imgSelected[img.oid];
+                        }
+                    }
                     scope.open = function (size) {
 
                         var modalInstance = $uibModal.open({

@@ -5,7 +5,7 @@
         </div>
         <div class="modal-body row">
                 <div class="col-md-3" ng-repeat="img in imgArray" >
-                    <label><input type="checkbox" name={{img.img_name}}>{{img.img_name}}<img  sizes="(max-width: 100px)" src="/api/images/{{img.oid}}" class="img-responsive" ></label>
+                    <label><input ng-click="doSelect(img)" type="checkbox" name={{img.img_name}}>{{img.img_name}}<img  sizes="(max-width: 100px)" src="/api/images/{{img.oid}}" class="img-responsive" ></label>
                 </div>
               Selected: <b>{{ selected.item }}</b>
         </div>
