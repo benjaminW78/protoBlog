@@ -14,33 +14,36 @@ var data = function($injector){
                         successCb = function(resData) {
                             if (resData.status === 200) {
                                 scope.imgArray=resData.data.kapsule;
-                                scope.open("lg");
+                                scope.open('lg');
                             }
                         },
                         errorCb = function(resData) {
                             console.log(resData, 'ERROR');
                         };
-                    proxyServ.send(opts).then(successCb,errorCb);
+                        proxyServ.send(opts).then(successCb,errorCb);
+                    };
 
-                    $scope.open = function (size) {
+                    scope.open = function (size) {
 
                         var modalInstance = $uibModal.open({
-                          animation: $scope.animationsEnabled,
+                          bindToController: true,
+                          scope:scope,
+                          templateUrl: 'myModalContent.html',
+                          animation: false,
                           size: size,
                           resolve: {
-                            items: function () {
-                              return $scope.items;
+                            imgArray: function () {
+                              return scope.imgArray;
                             }
                           }
                         });
 
                         modalInstance.result.then(function (selectedItem) {
-                          $scope.selected = selectedItem;
+                          scope.selected = selectedItem;
                         }, function () {
-                          $log.info('Modal dismissed at: ' + new Date());
+                          console.log('Modal dismissed at: ' + new Date());
                         });
                     };
-                };
             },
             templateUrl: '/html/back/directives/imgList.directive.html',
     };

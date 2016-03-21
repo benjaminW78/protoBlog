@@ -6,7 +6,7 @@ var app = '';
 require('../jquery.min.js');
 require('bootstrap-notify')
 angular = require('angular');
-app = angular.module( 'Back', [require("ng-file-upload"),require('angular-route'),require('ui.bootstrap')]);
+app = angular.module( 'Back', [require("ng-file-upload"),require('angular-route'),require('angular-ui-bootstrap')]);
 
 app.constant("moment", require("moment-timezone"));
 app.constant("notify", require("bootstrap-notify"));
