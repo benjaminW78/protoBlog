@@ -1,0 +1,9 @@
+#!/bin/bash
+# created by WINCKELL Benjamin .
+source ../toolsScript/logHook.sh
+source ../toolsScript/check_and_run.sh
+log_start
+
+git pull origin "$(git branch | grep -E '^\* ' | sed 's/^\* //g')"
+
+log_end

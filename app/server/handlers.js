@@ -172,6 +172,19 @@ var handlers = {
 
             });
         },
+        getAllImages:function(req,res){
+            var data = req.params,
+                query = 'SELECT img_name, data_type, description, oid FROM site."images" ;';
+
+            dbCo(query,function(poolRealese,err,queryResp){
+                poolRealese(err);
+                if(err||queryResp.rowCount<=0)
+                    res.status(400).send(sendToUser("error"," Image not found."));
+                else{
+                    res.status(200).send(sendToUser('success',"all images data send ",queryResp.rows));
+                }
+            });
+        },
         getImageByUid:function(req,res){
             var data = req.params,
                 obj = {},

@@ -4,12 +4,13 @@ var angular = '';
 var app = '';
 
 require('../jquery.min.js');
-
+require('bootstrap-notify')
 angular = require('angular');
-app = angular.module( 'Back', [require("ng-file-upload"),require('angular-route')]);
+app = angular.module( 'Back', [require("ng-file-upload"),require('angular-route'),require('angular-ui-bootstrap')]);
 
 app.constant("moment", require("moment-timezone"));
 app.constant("notify", require("bootstrap-notify"));
+app.constant("$",require('../jquery.min.js'));
 
 require('./services');
 require('./controllers');
@@ -29,8 +30,7 @@ app.config(function($routeProvider) {
         controller: 'createBlogPostCtrl',
     })
     .when('/uploadImages', {
-        templateUrl: '/html/back/uploadImages.html',
-        controller: 'uploadImagesCtrl',
+        templateUrl: '/html/back/uploadImages.html'
     })
     .otherwise({
         redirectTo: '/',

@@ -37,11 +37,13 @@ router.route("/api/blogPosts")
 .post(loggedRoutes,function(req,res){
     handlers.blog.createPost(req,res);
 });
-router.route("/api/blogPosts:blog_post_id")
+
+router.route("/api/blogPosts/:blogPostId")
 .put(loggedRoutes,function(req,res){
     handlers.blog.editPost(req,res);
 
 });
+
 router.route("/api/categories")
 .get(loggedRoutes,function(req,res){
     handlers.blog.getCategories(req,res);
@@ -51,8 +53,12 @@ router.route("/api/postStatus")
 .get(loggedRoutes,function(req,res){
     handlers.blog.getPostStatus(req,res);
 });
+
 router.route("/api/images")
 .post(loggedRoutes,function(req,res){
     handlers.blog.uploadImages(req,res);
+})
+.get(loggedRoutes,function(req,res){
+    handlers.blog.getAllImages(req,res);
 });
 module.exports = router;

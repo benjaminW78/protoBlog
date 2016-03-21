@@ -1,5 +1,7 @@
 'use strict';
-var data = ['$scope',
+var data = function(){
+    return {restrict: 'E',
+            controller: ['$scope',
             '$injector',
             function($scope, $injector) {
                 var proxyServ = $injector.get('proxy'),
@@ -27,10 +29,15 @@ var data = ['$scope',
                                 $scope.errorMsg = response.status + ': ' + response.data;
                             }
                         }, function (evt) {
-                            $scope.progress = 
+                            $scope.progress =
                                 Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
                         });
                     }
                 };
-}];
+            }],
+            templateUrl: '/html/back/directives/uploadImages.directive.html',
+    };
+};
+
+
 module.exports = data;

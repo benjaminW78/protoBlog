@@ -28,6 +28,6 @@ var data = function() {
             }],
             templateUrl: '/html/back/directives/logout.directive.html',
         };
-    }   ;
+    };
 
 module.exports = data;

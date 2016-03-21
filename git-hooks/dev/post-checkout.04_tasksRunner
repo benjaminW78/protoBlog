@@ -1,0 +1,15 @@
+#!/bin/bash
+# created by WINCKELL Benjamin .
+source ../toolsScript/logHook.sh
+source ../toolsScript/check_and_run.sh
+
+# run every grunt task known inside this file if you want it
+log_start
+
+check_run /src/js/backoffice/ "grunt dev-backoffice-js"
+check_run /src/js/bamboo/ "grunt dev-bamboo-js"
+check_run /src/js/dedicated_news/ "grunt dev-dedicated_news-js"
+check_run /src/js/extranet/ "grunt dev-extranet-js"
+check_run /src/js/renowizz/ "grunt dev-renowizz-js"
+
+log_end
