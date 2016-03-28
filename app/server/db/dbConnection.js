@@ -26,7 +26,7 @@ var connection = function(query, callback){
         };
 
         if(handleError(err)) return;
-
+        console.log('QUERY==>',query);
         client.query(query,callback.bind(this,done));
     });
 }
