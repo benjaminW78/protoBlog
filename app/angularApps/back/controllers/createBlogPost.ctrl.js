@@ -48,6 +48,12 @@ var data = ['$scope',
                     $('textarea[name="content"]').val(textBefore + '<img src="/api/images/'+$scope.imgSelected.oid+'">' + textAfter);
                 };
 
+               $scope.$watch('imgSelected',function(newValue,oldValue){
+                     if ( newValue &&oldValue && newValue.oid !== oldValue.oid ) {
+                        $scope.insertSelectedImages();
+                     }
+                });
+
                 $scope.createBlogPost = function() {
                     console.log($scope.blogPostForm);
                     $scope.blogPostForm.timeStamp = moment();
