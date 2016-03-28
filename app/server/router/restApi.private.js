@@ -41,7 +41,6 @@ router.route("/api/blogPosts")
 router.route("/api/blogPosts/:blogPostId")
 .put(loggedRoutes,function(req,res){
     handlers.blog.editPost(req,res);
-
 });
 
 router.route("/api/categories")

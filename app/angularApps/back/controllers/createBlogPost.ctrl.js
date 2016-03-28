@@ -4,6 +4,7 @@ var data = ['$scope',
             function($scope, $injector) {
                 var proxyServ = $injector.get('proxy'),
                     $ = $injector.get('$'),
+                    $routeParams = $injector.get('$routeParams'),
                     moment = $injector.get('moment');
 
                 $scope.blogPostForm = {};
@@ -54,7 +55,7 @@ var data = ['$scope',
                      }
                 });
 
-                $scope.createBlogPost = function() {
+                $scope.createUpdateBlogPost = function() {
                     console.log($scope.blogPostForm);
                     $scope.blogPostForm.timeStamp = moment();
                     var objClone = $.extend( objClone, $scope.blogPostForm); ;
@@ -63,13 +64,14 @@ var data = ['$scope',
                         objClone[i] = escape(objClone[i]);
                     }
                     var opts = {
-                            method: 'post',
-                            url: '/api/blogPosts',
+                            method:  ($routeParams.blogPostId === 'post_put')?'post':'put',
+                            url: '/api/blogPosts'+(($routeParams.blogPostId === 'post_put')?'':'/'+$routeParams.blogPostId ),
                             data: objClone,
                         },
                         successCb = function(resData) {
-                            if (resData.status === 200) {
-                                console.log(resData);
+                            console.log(resData);
+                            if (resData.status === 200 && $routeParams.blogPostId === 'post_put' ) {
+                                $routeParams.blogPostId = resData.data.kapsule.id;
                             }
                         },
                         errorCb = function(resData) {

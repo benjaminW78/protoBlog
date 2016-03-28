@@ -1,41 +1,41 @@
-#!/bin/bash
-# created by WINCKELL Benjamin
-source ../toolsScript/logHook.sh
+# #!/bin/bash
+# # created by WINCKELL Benjamin
+# source ../toolsScript/logHook.sh
 
-log_start
+# log_start
 
-pathGitDir=$(git rev-parse --show-toplevel)
+# pathGitDir=$(git rev-parse --show-toplevel)
 
-cd $pathGitDir
+# cd $pathGitDir
 
-files=$(git diff --cached --name-only --diff-filter=ACM | grep "\.js$")
+# files=$(git diff --cached --name-only --diff-filter=ACM | grep "\.js$")
 
-if [ "$files" = "" ]; then
-    log_end
-    exit 0
-fi
+# if [ "$files" = "" ]; then
+#     log_end
+#     exit 0
+# fi
 
-pass=0
+# pass=0
 
-echo -e "\nValidating JavaScript:\n"
+# echo -e "\nValidating JavaScript:\n"
 
-for file in ${files}; do
+# for file in ${files}; do
 
-    if [[ "$file" != "src/libjs/Gruntfile.js" ]]; then
-        cat "$pathGitDir/$file" | node ./node_modules/eslint/bin/eslint.js --stdin --quiet -c $pathGitDir/.eslintrc.js
-        if [[ "$?" = 0 ]]; then
-            echo -e "\t\033[32mESLint Passed: $file\033[0m"
-            echo -e "---------------------------------------------------------------------------------------------"
+#     if [[ "$file" != "src/libjs/Gruntfile.js" ]]; then
+#         cat "$pathGitDir/$file" | node ./node_modules/eslint/bin/eslint.js --stdin --quiet -c $pathGitDir/.eslintrc.js
+#         if [[ "$?" = 0 ]]; then
+#             echo -e "\t\033[32mESLint Passed: $file\033[0m"
+#             echo -e "---------------------------------------------------------------------------------------------"
 
-        else
-            echo -e "\t\033[41mESLint Failed: $file\033[0m"
-            echo -e "---------------------------------------------------------------------------------------------"
-            pass=1
-        fi
-    fi
-done
+#         else
+#             echo -e "\t\033[41mESLint Failed: $file\033[0m"
+#             echo -e "---------------------------------------------------------------------------------------------"
+#             pass=1
+#         fi
+#     fi
+# done
 
-log_end
+# log_end
 
-exit $pass
+# exit $pass
 

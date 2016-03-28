@@ -25,7 +25,7 @@ app.config(function($routeProvider) {
         templateUrl: '/html/back/home.html',
         controller: 'homeCtrl',
     })
-    .when('/createBlogPost', {
+    .when('/createBlogPost/:blogPostId', {
         templateUrl: '/html/back/createBlogPost.html',
         controller: 'createBlogPostCtrl',
     })

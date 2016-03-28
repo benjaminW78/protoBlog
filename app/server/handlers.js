@@ -5,8 +5,6 @@ var dbLaCo = require("./db/dbLargeObjectConnection.js");
 var formidable = require("formidable");
 var sendToUser = require("./utils/sendToUser.js");
 var util = require('util');
-var base64 = require('base64-stream');
-var btoa = require('btoa');
 var handlers = {
     user:{
         connect :function(req,res){
@@ -48,7 +46,40 @@ var handlers = {
     },
     blog:{
         editPost:function(req,res){
-            res.send("EDIT A existing POST");
+              var data=req.body;
+            if(data.title===undefined && data.title.length <=0){
+                res.status(422).send(sendToUser("error","title is missing"));
+            }
+            if(data.summary===undefined && data.summary.length <=0){
+                res.status(422).send(sendToUser("error","summary is missing"));
+            }
+            if(data.content==undefined && data.content.length <=0){
+                res.status(422).send(sendToUser("error","content is missing"));
+            }
+
+            var query = 'UPDATE site."blogPosts" SET (title, content, author_email,creation_date, summary, status, category_id) = (\''+
+                data.title+'\',\''+
+                data.content+'\',\''+
+                req.user.email+'\',\''+
+                data.timeStamp+'\',\''+
+                data.summary+'\',\''+
+                data.postStatusId+'\',\''+
+                data.categoryId
+                +'\') WHERE site."blogPosts"."id"='+req.params.blogPostId+' RETURNING *;';
+
+            dbCo(query,function(poolRealese,err,queryResp){
+                poolRealese(err);
+                if(err)
+                {
+                    console.log(err);
+                    res.status(400).send(sendToUser("error","error update new post."));
+                }else{
+                    if(queryResp.rowCount<=0)
+                        res.status(400).send(sendToUser("error"," impossible to update new post."));
+                    else
+                        res.status(200).send(sendToUser('success',"blog post successfully updated.",queryResp.rows[0]));
+                }
+            });
         },
         createPost:function(req,res){
             var data=req.body;
@@ -71,19 +102,18 @@ var handlers = {
                 data.postStatusId+'\',\''+
                 data.categoryId
                 +'\') RETURNING *;';
-            console.log(query)
+
             dbCo(query,function(poolRealese,err,queryResp){
                 poolRealese(err);
                 if(err)
                 {
                     console.log(err);
                     res.status(400).send(sendToUser("error","error create new post."));
-                }
-                 else{
+                }else{
                     if(queryResp.rowCount<=0)
                         res.status(400).send(sendToUser("error"," impossible to create new post."));
                     else
-                        res.status(200).send(sendToUser('success',"blog post successfully created.",{post:queryResp.rows[0]}));
+                        res.status(200).send(sendToUser('success',"blog post successfully created.",queryResp.rows[0]));
                 }
             });
         },
