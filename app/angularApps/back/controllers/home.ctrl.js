@@ -3,10 +3,11 @@ var data = ['$scope',
             '$injector',
             function($scope, $injector) {
                 var proxyServ = $injector.get('proxy'),
-                    reRoutageServ = $injector.get('reRoutage');
+                    reRoutageServ = $injector.get('reRoutage'),
+                    blogPostOverViews = $injector.get('blogPostOverViews');
 
                 $scope.loginForm = {};
-
+                $scope.blogPosts = blogPostOverViews.getBlogPostList().then(function(data){ $scope.blogPosts = data});
                 $scope.connection = function() {
                     var opts = {
                             method: 'get',

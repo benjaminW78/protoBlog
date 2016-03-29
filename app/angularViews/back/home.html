@@ -5,3 +5,7 @@ YOLO YOU ARE CONNECTED TO BACK
 <a href="#account">My account</a><br>
 <a href="#createBlogPost/post_put">create blog post</a><br>
 <a href="#uploadImages">upload Images</a>
+
+<ul>
+<li ng-repeat='current in blogPosts'><p>{{current.title}}</p><div>{{current.summary}}</div><div>{{current.status}}</div></li>
+</ul>

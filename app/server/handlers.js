@@ -119,20 +119,38 @@ var handlers = {
         },
         getPosts:function(req,res){
 
-            var query = 'SELECT * INTO site."blogPosts" WHERE status="1"';
-            console.log(query);
+            var query = 'SELECT '+
+                          'A.title, '+
+                          'A.id, '+
+                          'A.content, '+
+                          'A.creation_date, '+
+                          'A.author_email, '+
+                          'B.name as status, '+
+                          'A.summary, '+
+                          'A.category_id, '+
+                          'A.content_html '+
+                        'FROM '+
+                         ' site."blogPosts" as A ,site."blogPostStatus" as B '+
+                           'WHERE A.status = B.id ',
+            filter;
+            if(req.query.filter && req.query.filter !== '*'){
+                query += 'AND status='+req.query.filter+' ';
+            }
+            if(req.query.orderBy){
+                query += 'ORDER BY '+req.query.orderBy+' DESC ';
+            }
             dbCo(query,function(poolRealese,err,queryResp){
                 poolRealese(err);
                 if(err)
                 {
                     console.log(err);
-                    res.status(400).send(sendToUser("error","error create new post."));
+                    res.status(400).send(sendToUser("error","error get posts."));
                 }
                  else{
                     if(queryResp.rowCount<=0)
-                        res.status(400).send(sendToUser("error"," impossible to create new post."));
+                        res.status(400).send(sendToUser("error"," impossible to get posts."));
                     else
-                        res.status(200).send(sendToUser('success',"blog post successfully created.",queryResp.rows));
+                        res.status(200).send(sendToUser('success',"blog posts successfully getted.",queryResp.rows));
                 }
             });
         },
@@ -141,7 +159,6 @@ var handlers = {
         },
         getCategories:function(req,res){
             var query = 'SELECT id, name FROM site."blogPostCategories"  ORDER BY id ASC;';
-            console.log(query);
             dbCo(query,function(poolRealese,err,queryResp){
                 poolRealese(err);
                 if(err)
@@ -157,7 +174,6 @@ var handlers = {
         },
         getPostStatus:function(req,res){
             var query = 'SELECT id, name FROM site."blogPostStatus" ORDER BY id ASC;';
-            console.log(query);
             dbCo(query,function(poolRealese,err,queryResp){
                 poolRealese(err);
                 if(err)

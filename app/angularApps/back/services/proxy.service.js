@@ -1,6 +1,7 @@
 'use strict';
 
-var data = ['$http', function($http) {
+var data = ['$injector', function($injector) {
+    var $http = $injector.get('$http');
     this.send = function send(opts) {
         if ( typeof opts !== 'object' ) {
             throw new Error('error opts not a object proxy.send');
