@@ -8,6 +8,15 @@ var data = ['$scope',
 
                 $scope.loginForm = {};
                 $scope.blogPosts = blogPostOverViews.getBlogPostList().then(function(data){ $scope.blogPosts = data});
+
+                 $scope.whatClassIsIt= function(someValue){
+                     if(someValue=="published")
+                            return "list-group-item list-group-item-success";
+                     else if(someValue=="draft")
+                         return "list-group-item list-group-item-warning";
+                     else
+                         return "list-group-item list-group-item-danger";
+                }
                 $scope.connection = function() {
                     var opts = {
                             method: 'get',

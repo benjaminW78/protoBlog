@@ -2,10 +2,22 @@
 
 YOLO YOU ARE CONNECTED TO BACK
 
-<a href="#account">My account</a><br>
-<a href="#createBlogPost/post_put">create blog post</a><br>
-<a href="#uploadImages">upload Images</a>
+<div class="row">
+    <a class="col-md-3" href="#account">My account</a>
+    <a class="col-md-3" href="#createBlogPost/post_put">create blog post</a>
+    <a class="col-md-3" href="#uploadImages">upload Images</a>
+</div>
 
-<ul>
-<li ng-repeat='current in blogPosts'><p>{{current.title}}</p><div>{{current.summary}}</div><div>{{current.status}}</div></li>
+<div class="row ">
+<ul class="list-group col-md-6">
+    <li ng-class="whatClassIsIt(current.status)" ng-repeat='current in blogPosts'>
+        <a href="#createBlogPost/{{current.id}}">
+            <p>{{current.title}}
+                <span class="label label-default label-pill pull-xs-right">{{current.status}}</span>
+            </p>
+
+            <span>{{current.summary}}</span>
+        </a>
+    </li>
 </ul>
+</div>
