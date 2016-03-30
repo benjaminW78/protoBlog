@@ -1,46 +1,53 @@
-
-  <div class="col-lg-3 formContainer">
+<div class="col-lg-3 formContainer">
     <form method="POST" id="connect" ng-submit="connection()">
-      <h1>Connection</h1>
-      <div class="form-group ">
-        <label>email</label>
-        <input type="text" name="email" ng-model="loginForm.email" class="form-control" autocomplete="on" required="required" placeholder="type your email here" autofocus="on"/>
-    </div>
-    <div class="form-group ">
-        <label>Password</label>
-        <input type="password"  class="form-control" name="password" ng-model="loginForm.password" autocomplete="on" required="required" placeholder="type your password here"/>
-    </div>
-    <button type="submit" class="btn btn-primary btn-danger" name="connectBtn" value="Submit">Submit</button>
-</form>
+        <h1>Connection</h1>
+        <div class="form-group ">
+            <label>email</label>
+            <input type="text" name="email" ng-model="loginForm.email" class="form-control" autocomplete="on"
+                   required="required" placeholder="type your email here" autofocus="on"/>
+        </div>
+        <div class="form-group ">
+            <label>Password</label>
+            <input type="password" class="form-control" name="password" ng-model="loginForm.password" autocomplete="on"
+                   required="required" placeholder="type your password here"/>
+        </div>
+        <button type="submit" class="btn btn-primary btn-danger" name="connectBtn" value="Submit">Submit</button>
+    </form>
 </div>
 
 <div class="col-lg-3 formContainer">
-  <form method="POST" id="register" action="/api/users/">
-    <h1>Create account</h1>
-     <div class="form-group ">
-        <label>User Pseudo</label>
-        <input type="text" name="pseudo" class="form-control" autocomplete="on" required="required" placeholder="type your name here" autofocus="on"/>
-    </div>
-    <div class="form-group ">
-        <label>User lastName</label>
-        <input type="text" name="lastName" class="form-control" autocomplete="on" required="required" placeholder="type your name here" autofocus="on"/>
-    </div>
-    <div class="form-group ">
-        <label>User firstName</label>
-        <input type="text" name="firstName" class="form-control" autocomplete="on" required="required" placeholder="type your surname here" autofocus="on"/>
-    </div>
-    <div class="form-group ">
-        <label>Email</label>
-        <input type="mail" name="email" class="form-control" autocomplete="on" required="required" placeholder="type your email here" autofocus="on"/>
-    </div>
-    <div class="form-group ">
-        <label>Password</label>
-        <input type="password"  class="form-control" name="password" autocomplete="on" required="required" placeholder="type your password here"/>
-    </div>
-    <div class="form-group ">
-        <label>Confirm password</label>
-        <input type="password"  class="form-control" name="passwordConfirm" autocomplete="on" required="required" placeholder="type your password again here"/>
-    </div>
-    <button type="submit" class="btn btn-success" name="registerBtn" >Create User</button>
-</form>
+    <form method="POST" id="register" action="/api/users/">
+        <h1>Create account</h1>
+        <div class="form-group ">
+            <label>User Pseudo</label>
+            <input type="text" name="pseudo" class="form-control" autocomplete="on" required="required"
+                   placeholder="type your name here" autofocus="on"/>
+        </div>
+        <div class="form-group ">
+            <label>User lastName</label>
+            <input type="text" name="lastName" class="form-control" autocomplete="on" required="required"
+                   placeholder="type your name here" autofocus="on"/>
+        </div>
+        <div class="form-group ">
+            <label>User firstName</label>
+            <input type="text" name="firstName" class="form-control" autocomplete="on" required="required"
+                   placeholder="type your surname here" autofocus="on"/>
+        </div>
+        <div class="form-group ">
+            <label>Email</label>
+            <input type="mail" name="email" class="form-control" autocomplete="on" required="required"
+                   placeholder="type your email here" autofocus="on"/>
+        </div>
+        <div class="form-group ">
+            <label>Password</label>
+            <input type="password" class="form-control" name="password" autocomplete="on" required="required"
+                   placeholder="type your password here"/>
+        </div>
+        <div class="form-group ">
+            <label>Confirm password</label>
+            <input type="password" class="form-control" name="passwordConfirm" autocomplete="on" required="required"
+                   placeholder="type your password again here"/>
+        </div>
+        <button type="submit" class="btn btn-success" name="registerBtn">Create User</button>
+    </form>
 </div>

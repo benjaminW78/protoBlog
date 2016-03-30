@@ -1,5 +1,3 @@
-
-
 YOLO YOU ARE CONNECTED TO BACK
 
 <div class="row">
@@ -9,15 +7,15 @@ YOLO YOU ARE CONNECTED TO BACK
 </div>
 
 <div class="row ">
-<ul class="list-group col-md-6">
-    <li ng-class="whatClassIsIt(current.status)" ng-repeat='current in blogPosts'>
-        <a href="#createBlogPost/{{current.id}}">
-            <p>{{current.title}}
-                <span class="label label-default label-pill pull-xs-right">{{current.status}}</span>
-            </p>
+    <ul class="list-group col-md-6">
+        <li ng-class="whatClassIsIt(current.status)" ng-repeat='current in blogPosts'>
+            <a href="#createBlogPost/{{current.id}}">
+                <p>{{current.title}}
+                    <span class="label label-default label-pill pull-xs-right">{{current.status}}</span>
+                </p>
 
-            <span>{{current.summary}}</span>
-        </a>
-    </li>
-</ul>
+                <span>{{current.summary}}</span>
+            </a>
+        </li>
+    </ul>
 </div>

@@ -1,12 +1,13 @@
 <div class="col-lg-3 formContainer">
-  <h4>Upload on file select</h4>
+    <h4>Upload on file select</h4>
 
     <button ngf-select="uploadFiles($files)" multiple
-            accept="image/*">Select Files</button>
+            accept="image/*">Select Files
+    </button>
     <br>
     <br>Files:
     <ul>
-        <li ng-repeat="f in files" style="font:smaller">
+        <li ng-repeat="f in files" style="font-family:smaller">
             {{f.name}}
         </li>
     </ul>
