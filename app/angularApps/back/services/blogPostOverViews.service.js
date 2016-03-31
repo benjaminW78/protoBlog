@@ -24,6 +24,14 @@ var data = [ '$injector', function ( $injector ) {
             };
         return proxyServ.send( opts ).then( successCb, errorCb );
     };
+    this.deleteBlogPost = function (id) {
+        var opts = {
+                method: 'delete',
+                url   : '/api/blogPosts/'+id,
+            };
+        return proxyServ.send( opts );
+
+    };
 
 } ];
 

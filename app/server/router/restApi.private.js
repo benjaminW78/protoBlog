@@ -39,8 +39,10 @@ router.route( "/api/blogPosts" )
 router.route( "/api/blogPosts/:blogPostId" )
       .put( loggedRoutes, function ( req, res ) {
           handlers.blog.editPost( req, res );
-      } );
-
+      } )
+      .delete(loggedRoutes,function ( req, res ) {
+          handlers.blog.deletePost( req, res );
+      })
 router.route( "/api/categories" )
       .get( loggedRoutes, function ( req, res ) {
           handlers.blog.getCategories( req, res );

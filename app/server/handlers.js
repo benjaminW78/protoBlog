@@ -117,6 +117,28 @@ var handlers = {
                 }
             } );
         },
+        deletePost        : function ( req, res ) {
+            var postId = req.params.blogPostId;
+            if ( !postId) {
+                res.status( 422 ).send( sendToUser( "error", "missing blogPostId " ) );
+            }
+
+            var query = 'UPDATE site."blogPosts" SET (status) = (3) WHERE id='+postId+';';
+
+            dbCo( query, function ( poolRealese, err, queryResp ) {
+                poolRealese( err );
+                if ( err ) {
+                    console.log( err );
+                    res.status( 400 ).send( sendToUser( "error", "error update status blogPost." ) );
+                }
+                else {
+                    if ( queryResp.rowCount <= 0 )
+                        res.status( 400 ).send( sendToUser( "error", " error update new post Status." ) );
+                    else
+                        res.status( 200 ).send( sendToUser( 'success', "blog post status successfully deleted.", queryResp.rows[ 0 ] ) );
+                }
+            } );
+        },
         getPosts          : function ( req, res ) {
 
             var query = 'SELECT ' +
