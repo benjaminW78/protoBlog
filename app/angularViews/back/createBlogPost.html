@@ -1,32 +1,35 @@
 <img-list></img-list>
 
 <div class="col-lg-3 formContainer">
-  <form method="POST" id="blogPostForm" ng-submit="createUpdateBlogPost()" >
-    <h1>create blog post</h1>
-     <div class="form-group ">
-        <label>Title</label>
-        <input type="text" name="title" class="form-control" ng-model="blogPostForm.title"  autocomplete="on" required="required" placeholder="type title post" autofocus="on"/>
-    </div>
-    <div class="form-group">
-        <label>select category for blog Post</label>
-        <select name='categories' ng-model="blogPostForm.categoryId" >
-            <option ng-repeat="categ in categories" value='{{categ.id}}'>{{categ.name}}</option>
-        </select>
-    </div>
-    <div class="form-group">
-        <label>select blog post status</label>
-        <select name='post status' ng-model="blogPostForm.postStatusId" ng-init="blogPostForm.postStatusId=1">
-            <option ng-repeat="post in postStatus" value='{{post.id}}'>{{post.name}}</option>
-        </select>
-    </div>
-    <div class="form-group ">
-        <label>summary of this blog Post</label>
-        <input type="text" name="summary" class="form-control" ng-model="blogPostForm.summary" autocomplete="on" required="required" placeholder="type blog post summary" autofocus="on"/>
-    </div>
-    <div class="form-group ">
-        <label>Content</label>
-        <textarea name="content" class="form-control" rows="5" cols="30" ng-model="blogPostForm.content" autocomplete="off" required="required" placeholder="blog post there" autofocus="on"></textarea>
-    </div>
-    <button type="submit" class="btn btn-success" >blogPost</button>
-</form>
+    <form method="POST" id="blogPostForm" ng-submit="createUpdateBlogPost()">
+        <h1>create blog post</h1>
+        <div class="form-group ">
+            <label>Title</label>
+            <input type="text" name="title" class="form-control" ng-model="blogPostForm.title" autocomplete="on"
+                   required="required" placeholder="type title post" autofocus="on"/>
+        </div>
+        <div class="form-group">
+            <label>select category for blog Post</label>
+            <select name='categories' ng-model="blogPostForm.categoryId">
+                <option ng-repeat="categ in categories" value='{{categ.id}}'>{{categ.name}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>select blog post status</label>
+            <select name='post status' ng-model="blogPostForm.postStatusId" ng-init="blogPostForm.postStatusId=1">
+                <option ng-repeat="post in postStatus" value='{{post.id}}'>{{post.name}}</option>
+            </select>
+        </div>
+        <div class="form-group ">
+            <label>summary of this blog Post</label>
+            <input type="text" name="summary" class="form-control" ng-model="blogPostForm.summary" autocomplete="on"
+                   required="required" placeholder="type blog post summary" autofocus="on"/>
+        </div>
+        <div class="form-group ">
+            <label>Content</label>
+            <textarea name="content" class="form-control" rows="5" cols="30" ng-model="blogPostForm.content"
+                      autocomplete="off" required="required" placeholder="blog post there" autofocus="on"></textarea>
+        </div>
+        <button type="submit" class="btn btn-success">blogPost</button>
+    </form>
 </div>

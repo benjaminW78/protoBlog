@@ -1,43 +1,43 @@
 'use strict';
-var data = function(){
-    return {restrict: 'E',
-            controller: ['$scope',
+var data = function () {
+    return {
+        restrict   : 'E',
+        controller : [ '$scope',
             '$injector',
-            function($scope, $injector) {
-                var proxyServ = $injector.get('proxy'),
-                    Upload = $injector.get('Upload'),
-                    $timeout = $injector.get('$timeout'),
-                    notify = $injector.get('notify'),
-                    moment = $injector.get('moment');
+            function ( $scope, $injector ) {
+                var proxyServ = $injector.get( 'proxy' ),
+                    Upload = $injector.get( 'Upload' ),
+                    $timeout = $injector.get( '$timeout' ),
+                    notify = $injector.get( 'notify' ),
+                    moment = $injector.get( 'moment' );
 
-                $scope.uploadFiles = function (files) {
+                $scope.uploadFiles = function ( files ) {
                     $scope.files = files;
-                    if (files && files.length) {
-                        Upload.upload({
-                            url: '/api/images',
-                            type:'post',
+                    if ( files && files.length ) {
+                        Upload.upload( {
+                            url : '/api/images',
+                            type: 'post',
                             data: {
-                                files: files,
-                                description:'test'
+                                files      : files,
+                                description: 'test'
                             }
-                        }).then(function (response) {
-                            $timeout(function () {
+                        } ).then( function ( response ) {
+                            $timeout( function () {
                                 $scope.result = response.data;
-                            });
-                        }, function (response) {
-                            if (response.status > 0) {
+                            } );
+                        }, function ( response ) {
+                            if ( response.status > 0 ) {
                                 $scope.errorMsg = response.status + ': ' + response.data;
                             }
-                        }, function (evt) {
+                        }, function ( evt ) {
                             $scope.progress =
-                                Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
-                        });
+                                Math.min( 100, parseInt( 100.0 * evt.loaded / evt.total ) );
+                        } );
                     }
                 };
-            }],
-            templateUrl: '/html/back/directives/uploadImages.directive.html',
+            } ],
+        templateUrl: '/html/back/directives/uploadImages.directive.html',
     };
 };
-
 
 module.exports = data;
