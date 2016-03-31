@@ -49,7 +49,7 @@ router.route( "/login" )
 // .delete(function(req,res){
 //     handlers.user.del(req,res);
 // });
-router.route( "/api/blogPosts" )
+router.route( ["/api/blogPosts","/api/blogPosts/:blogPostId"] )
       .get( function ( req, res ) {
           handlers.blog.getPosts( req, res );
       } );

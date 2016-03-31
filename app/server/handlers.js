@@ -63,8 +63,8 @@ var handlers = {
                 req.user.email + '\',\'' +
                 data.timeStamp + '\',\'' +
                 data.summary + '\',\'' +
-                data.postStatusId + '\',\'' +
-                data.categoryId
+                data.status_id + '\',\'' +
+                data.category_id
                 + '\') WHERE site."blogPosts"."id"=' + req.params.blogPostId + ' RETURNING *;';
 
             dbCo( query, function ( poolRealese, err, queryResp ) {
@@ -148,6 +148,7 @@ var handlers = {
                     'A.creation_date, ' +
                     'A.author_email, ' +
                     'B.name as status, ' +
+                    'B.id as status_id, ' +
                     'A.summary, ' +
                     'A.category_id, ' +
                     'A.content_html ' +
@@ -157,6 +158,9 @@ var handlers = {
                 filter;
             if ( req.query.filter && req.query.filter !== '*' ) {
                 query += 'AND status=' + req.query.filter + ' ';
+            }
+            if(req.params.blogPostId && req.params.blogPostId !== 'post_put'){
+                query += 'AND A.id=' + req.params.blogPostId + ' ';
             }
             if ( req.query.orderBy ) {
                 query += 'ORDER BY ' + req.query.orderBy + ' DESC ';
