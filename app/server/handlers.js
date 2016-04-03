@@ -119,11 +119,11 @@ var handlers = {
         },
         deletePost        : function ( req, res ) {
             var postId = req.params.blogPostId;
-            if ( !postId) {
+            if ( !postId ) {
                 res.status( 422 ).send( sendToUser( "error", "missing blogPostId " ) );
             }
 
-            var query = 'UPDATE site."blogPosts" SET (status) = (3) WHERE id='+postId+';';
+            var query = 'UPDATE site."blogPosts" SET (status) = (3) WHERE id=' + postId + ';';
 
             dbCo( query, function ( poolRealese, err, queryResp ) {
                 poolRealese( err );
@@ -159,7 +159,7 @@ var handlers = {
             if ( req.query.filter && req.query.filter !== '*' ) {
                 query += 'AND status=' + req.query.filter + ' ';
             }
-            if(req.params.blogPostId && req.params.blogPostId !== 'post_put'){
+            if ( req.params.blogPostId && req.params.blogPostId !== 'post_put' ) {
                 query += 'AND A.id=' + req.params.blogPostId + ' ';
             }
             if ( req.query.orderBy ) {
@@ -251,7 +251,7 @@ var handlers = {
 
             dbCo( query, function ( poolRealese, err, queryResp ) {
                 poolRealese( err );
-                if ( err || queryResp.rowCount <= 0 )
+                if ( err || (queryResp && queryResp.rowCount <= 0) )
                     res.status( 400 ).send( sendToUser( "error", " Image not found." ) );
                 else {
                     res.status( 200 ).send( sendToUser( 'success', "all images data send ", queryResp.rows ) );
@@ -265,7 +265,7 @@ var handlers = {
 
             dbCo( query, function ( poolRealese, err, queryResp ) {
                 poolRealese( err );
-                if ( err || queryResp.rowCount <= 0 )
+                if ( err || (queryResp && queryResp.rowCount <= 0 ) )
                     res.status( 400 ).send( sendToUser( "error", " Image not found." ) );
                 else {
                     obj.name = queryResp.rows[ 0 ].img_name;
@@ -273,6 +273,18 @@ var handlers = {
                     obj.data_type = queryResp.rows[ 0 ].data_type;
                     obj.oid = queryResp.rows[ 0 ].oid;
                     dbLaCo.load( obj, res );
+                }
+            } );
+
+        },
+        deleteImageByUid  : function ( req, res ) {
+            dbLaCo.delete( req.params.oid, function ( err, queryResp ) {
+                if ( err || (queryResp && queryResp.rowCount <= 0 ) ) {
+                    console.log( "DSDDD" );
+                    res.status( 400 ).send( sendToUser( "error", " Image not found." ) );
+                }
+                else {
+                    console.log( "AAAAAAAAAAAAAAAAAAAAAA",arguments);
                 }
             } );
 
