@@ -17,8 +17,14 @@
 <body>
 <header></header>
 <div id="mainContainer" class='container-fluid'>
-    <btn-logout></btn-logout>
+    <div class="row">
+        <a class="col-md-3" href="#account">My account</a>
+        <a class="col-md-3" href="#createBlogPost/post_put">create blog post</a>
+        <a class="col-md-3" href="#uploadImages">upload Images</a>
+        <btn-logout></btn-logout>
+    </div>
     <error-popup></error-popup>
+
     <div ng-view></div>
 </div>
 <footer></footer>
