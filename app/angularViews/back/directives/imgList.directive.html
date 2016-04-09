@@ -6,13 +6,16 @@
     </div>
     <div class="modal-body row">
         <div class="col-md-3" ng-repeat="img in imgArray">
-            <label><input ng-click="doSelect(img)" type="checkbox" name={{img.img_name}}>{{img.img_name}}<img
-                    sizes="(max-width: 100px)" src="/api/images/{{img.oid}}" class="img-responsive"></label>
+            <label>
+                <input ng-click="doSelect(img)" ng-model="img.selected" type="checkbox" name={{img.img_name}}>{{img.img_name}}<img
+                    sizes="(max-width: 100px)" src="/api/images/{{img.oid}}" class="img-responsive">
+            </label>
         </div>
         Selected: <b>{{ selected.item }}</b>
     </div>
     <div class="modal-footer">
         <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+        <button class="btn btn-error" type="button" ng-click="delete()">delete</button>
         <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
     </div>'
 </script>

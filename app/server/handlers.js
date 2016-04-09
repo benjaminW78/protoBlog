@@ -280,7 +280,6 @@ var handlers = {
         deleteImageByUid  : function ( req, res ) {
             dbLaCo.delete( req.params.oid, function ( err, queryResp ) {
                 if ( err || (queryResp && queryResp.rowCount <= 0 ) ) {
-                    console.log( "DSDDD" );
                     res.status( 400 ).send( sendToUser( "error", " Image not found." ) );
                 }
                 else {

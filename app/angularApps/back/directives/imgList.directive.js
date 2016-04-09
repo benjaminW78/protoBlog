@@ -6,9 +6,13 @@ var data = function ( $injector ) {
     return {
         restrict   : 'E',
         link       : function ( scope ) {
-            scope.imgSelected = {};
+            scope.imgSelected = [];
             scope.imgArray;
+            scope.tempImgSelected = [];
             scope.getAllFiles = function ( $ ) {
+                scope.imgSelected = [];
+                scope.tempImgSelected = [];
+
                 var opts = {
                         method: 'get',
                         url   : '/api/images'
@@ -25,9 +29,12 @@ var data = function ( $injector ) {
                 proxyServ.send( opts ).then( successCb, errorCb );
             };
             scope.doSelect = function ( img ) {
-                scope.imgSelected = null;
-                scope.imgSelected = img;
-                scope.ok();
+                if ( img.selected && -1 === scope.tempImgSelected.indexOf( img ) ) {
+                    scope.tempImgSelected.push( img );
+                }
+                else {
+                    scope.tempImgSelected.splice( scope.tempImgSelected.indexOf( img ), 1 );
+                }
             }
             scope.open = function ( size ) {
 
@@ -44,7 +51,11 @@ var data = function ( $injector ) {
                     }
                 } );
                 scope.ok = function () {
+                    scope.imgSelected = scope.tempImgSelected;
                     modalInstance.close();
+                };
+                scope.delete = function () {
+
                 };
                 scope.cancel = function () {
                     modalInstance.dismiss( 'cancel' );

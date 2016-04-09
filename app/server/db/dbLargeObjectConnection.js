@@ -115,7 +115,7 @@ var connection = {
                     return err;
                 }
 
-                console.log( 'deleted large object with oid', oid );
+                console.log( 'deleted large object with oid', arguments );
                 client.query( 'COMMIT', callback.bind( this, oid ) );
                 done();
 
