@@ -55,7 +55,23 @@ var data = function ( $injector ) {
                     modalInstance.close();
                 };
                 scope.delete = function () {
-
+                    console.log( scope.tempImgSelected );
+                    var opts = {
+                            method: 'delete',
+                            url   : '/api/images',
+                            data    : scope.tempImgSelected,
+                            headers: {'Content-Type': 'application/json;charset=utf-8'}
+                        },
+                        successCb = function ( resData ) {
+                            if ( resData.status === 200 ) {
+                                console.log( resData );
+                                // scope.open( 'lg' );
+                            }
+                        },
+                        errorCb = function ( resData ) {
+                            console.log( resData, 'ERROR' );
+                        };
+                    proxyServ.send( opts ).then( successCb, errorCb );
                 };
                 scope.cancel = function () {
                     modalInstance.dismiss( 'cancel' );

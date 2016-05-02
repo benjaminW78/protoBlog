@@ -60,7 +60,7 @@ router.route( ["/api/images","/api/images/:oid"] )
       .get( loggedRoutes, function ( req, res ) {
           handlers.blog.getAllImages( req, res );
       } )
-      .delete( loggedRoutes, function ( req, res ) {
+      .delete( function ( req, res ) {
           handlers.blog.deleteImageByUid( req, res );
       } );
 module.exports = router;
