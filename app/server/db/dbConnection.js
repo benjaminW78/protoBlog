@@ -29,6 +29,6 @@ var connection = function ( query, callback ) {
         console.log( 'QUERY==>', query );
         client.query( query, callback.bind( this, done ) );
     } );
-}
+};
 
 module.exports = connection;

@@ -253,7 +253,7 @@ var handlers = {
             dbCo( query, function ( poolRealese, err, queryResp ) {
                 poolRealese( err );
                 if ( err || (queryResp && queryResp.rowCount <= 0) )
-                    res.status( 400 ).send( sendToUser( "error", " Image not found." ) );
+                    res.status( 400 ).send( sendToUser( "error", " Images not founds." ) );
                 else {
                     res.status( 200 ).send( sendToUser( 'success', "all images data send ", queryResp.rows ) );
                 }
@@ -286,44 +286,42 @@ var handlers = {
                 oid = req.params.oid;
             }
             else if ( req.body && req.body.length >= 0 ) {
-
+                console.log( "ici boum delete start", req.body );
                 var promisesArray = [];
                 for ( var index = 0; index < req.body.length; index++ ) {
 
-                    promisesArray.push( (function () {
+                    promisesArray.push( (function (index) {
                         'use strict';
 
                         var deferred = Q.defer();
                         dbLaCo.delete( req.body[ index ].oid, function ( err, queryResp ) {
-                            var oid =req.body[ index ];
-                            console.log(oid);
+
+                            var oid = req.body[index].oid;
+
                             if ( err || (queryResp && queryResp.rowCount <= 0 ) ) {
                                 deferred.reject( err )
-                                // res.status( 400 ).send( sendToUser( "error", " Image not found." ) );
                             }
                             else {
-                                deferred.resolve();
-                                console.log(req.body,"eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
                                 var query = 'DELETE FROM site."images" WHERE oid=' + oid + ' RETURNING *;';
 
                                 dbCo( query, function ( poolRealese, err, queryResp ) {
                                     poolRealese( err );
                                     if ( err || (queryResp && queryResp.rowCount <= 0 ) )
+
                                         res.status( 400 ).send( sendToUser( "error", " img data not deleted." ) );
                                     else {
                                         deferred.resolve();
                                     }
                                 } );
-                                // console.log( "AAAAAAAAAAAAAAAAAAAAAA", arguments );
                             }
                         } );
                         return deferred;
-                    })() );
+                    })(index) );
                 }
 
                 Q.all( promisesArray ).then( function () {
                     'use strict';
-                    // console.log( 'une promesse validé', arguments );
+                    console.log( 'une promesse validé', arguments );
                 } )
             }
 

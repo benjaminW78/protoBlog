@@ -42,7 +42,7 @@ router.route( "/api/blogPosts/:blogPostId" )
       } )
       .delete(loggedRoutes,function ( req, res ) {
           handlers.blog.deletePost( req, res );
-      })
+      });
 router.route( "/api/categories" )
       .get( loggedRoutes, function ( req, res ) {
           handlers.blog.getCategories( req, res );

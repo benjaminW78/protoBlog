@@ -1,6 +1,7 @@
 var conf = require( './conf.js' ),
     ENV = require( '../utils/env.js' ),
     dbConf = conf[ ENV ],
+    sendToUser = require( "../utils/sendToUser.js" ),
     LargeObjectManager = require( 'pg-large-object' ).LargeObjectManager,
     pg = require( 'pg' );
 
@@ -67,6 +68,7 @@ var connection = {
             cb    : function ( done, client, err, size, stream ) {
                 if ( err ) {
                     done( err );
+                    res.status( 400 ).send( sendToUser( "error", " Image not found." ) );
                     return console.error( 'Unable to read the given large object', err );
                 }
                 console.log( 'Streaming a large object with a total size of ', size );
