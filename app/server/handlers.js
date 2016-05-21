@@ -220,30 +220,46 @@ var handlers = {
             form.type = "multipart";
             form.multiples = true;
             form.parse( req, function ( err, fields, files ) {
+                var promisesArray = [];
+
                 var arrFiles = Object.keys( files ).map( function ( key ) {
                     return files[ key ]
                 } );
-                dbLaCo.save( arrFiles[ 0 ], function ( oid ) {
-                    var query = 'INSERT INTO site."images" (img_name,data_type,description,creation_date,oid) VALUES (\'' +
-                        arrFiles[ 0 ].name + '\',\'' +
-                        arrFiles[ 0 ].type + '\',\'' +
-                        fields.description + '\',DEFAULT,\'' +
-                        oid + '\')';
 
-                    dbCo( query, function ( poolRealese, err, queryResp ) {
-                        poolRealese( err );
-                        if ( err )
-                            res.status( 400 ).send( sendToUser( "error", "error upload image" ) );
-                        else {
-                            if ( queryResp.rowCount <= 0 )
-                                res.status( 400 ).send( sendToUser( "error", " error upload image." ) );
-                            else {
-                                res.status( 200 ).send( sendToUser( 'success', "File successfully uploaded", { postStatus: queryResp.rows } ) );
-                            }
-                        }
-                    } )
-                } );
+                for ( var index = 0; index < arrFiles.length; index++ ) {
 
+                    promisesArray.push( (function ( index ) {
+                        'use strict';
+                        var deferred = Q.defer();
+
+                        dbLaCo.save( arrFiles[ index ], function ( oid ) {
+                            var query = 'INSERT INTO site."images" (img_name,data_type,description,creation_date,oid) VALUES (\'' +
+                                arrFiles[ 0 ].name + '\',\'' +
+                                arrFiles[ 0 ].type + '\',\'' +
+                                fields.description + '\',DEFAULT,\'' +
+                                oid + '\')';
+
+                            dbCo( query, function ( poolRealese, err, queryResp ) {
+                                poolRealese( err );
+                                if ( err ) {
+                                    deferred.reject( "error upload image" );
+                                }
+                                else {
+                                    if ( queryResp.rowCount <= 0 )
+                                        deferred.reject( "error upload image" );
+                                    else {
+                                        deferred.resolve( queryResp.rowCount );
+                                    }
+                                }
+                            } )
+                        } );
+                    })( index ) )
+                }
+
+                Q.all( promisesArray ).done( function ( values ) {
+                    'use strict';
+                    res.status( 200 ).send( sendToUser( "succes", "imgs successfuly deleted" ) );
+                } )
             } );
         },
         getAllImages      : function ( req, res ) {
@@ -290,13 +306,13 @@ var handlers = {
                 var promisesArray = [];
                 for ( var index = 0; index < req.body.length; index++ ) {
 
-                    promisesArray.push( (function (index) {
+                    promisesArray.push( (function ( index ) {
                         'use strict';
 
                         var deferred = Q.defer();
                         dbLaCo.delete( req.body[ index ].oid, function ( err, queryResp ) {
 
-                            var oid = req.body[index].oid;
+                            var oid = req.body[ index ].oid;
 
                             if ( err || (queryResp && queryResp.rowCount <= 0 ) ) {
                                 deferred.reject( err )
@@ -306,22 +322,22 @@ var handlers = {
 
                                 dbCo( query, function ( poolRealese, err, queryResp ) {
                                     poolRealese( err );
-                                    if ( err || (queryResp && queryResp.rowCount <= 0 ) )
-
-                                        res.status( 400 ).send( sendToUser( "error", " img data not deleted." ) );
+                                    if ( err || (queryResp && queryResp.rowCount <= 0 ) ) {
+                                        deferred.reject( " img data not deleted." );
+                                    }
                                     else {
-                                        deferred.resolve();
+                                        deferred.resolve( queryResp.rowCount );
                                     }
                                 } );
                             }
                         } );
                         return deferred;
-                    })(index) );
+                    })( index ) );
                 }
 
-                Q.all( promisesArray ).then( function () {
+                Q.all( promisesArray ).done( function ( values ) {
                     'use strict';
-                    console.log( 'une promesse validé', arguments );
+                    res.status( 200 ).send( sendToUser( "succes", "imgs successfuly deleted" ) );
                 } )
             }
 
