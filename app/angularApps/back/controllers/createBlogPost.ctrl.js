@@ -30,8 +30,8 @@ var data = [ '$scope',
                     url   : '/api/postStatus',
                 },
                 successCb = function ( resData ) {
-                    resData.data.kapsule.postStatus[0]["selected"] = 'selected';
-                    $scope.postStatus=resData.data.kapsule.postStatus;
+                    resData.data.kapsule.postStatus[ 0 ][ "selected" ] = 'selected';
+                    $scope.postStatus = resData.data.kapsule.postStatus;
                 },
                 errorCb = function ( resData ) {
                     console.log( resData, 'ERROR' );
@@ -66,11 +66,15 @@ var data = [ '$scope',
             var v = $( 'textarea[name="content"]' ).val();
             var textBefore = v.substring( 0, cursorPos );
             var textAfter = v.substring( cursorPos, v.length );
-            $( 'textarea[name="content"]' ).val( textBefore + '<img src="/api/images/' + $scope.imgSelected.oid + '">' + textAfter );
+            var selectedImgElement = '';
+            for ( var obj in $scope.imgSelected ) {
+                selectedImgElement += '<img src="/api/images/' + $scope.imgSelected[ obj ].oid + '">';
+            }
+            $( 'textarea[name="content"]' ).val( textBefore + selectedImgElement + textAfter );
         };
 
-        $scope.$watch( 'imgSelected', function ( newValue, oldValue ) {
-            if ( newValue && oldValue && newValue.oid !== oldValue.oid ) {
+        $scope.$watch( 'imgSelected.length', function ( newValue, oldValue ) {
+            if ( newValue!== oldValue) {
                 $scope.insertSelectedImages();
             }
         } );

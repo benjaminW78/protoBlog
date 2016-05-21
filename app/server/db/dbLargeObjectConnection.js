@@ -1,14 +1,16 @@
 var conf = require( './conf.js' ),
     ENV = require( '../utils/env.js' ),
     dbConf = conf[ ENV ],
+    sendToUser = require( "../utils/sendToUser.js" ),
     LargeObjectManager = require( 'pg-large-object' ).LargeObjectManager,
-    LargeObject = require( 'pg-large-object' ).LargeObject,
     pg = require( 'pg' );
 
 var conString = "postgres://" + dbConf.DB_SUPERUSER + ":" + dbConf.DB_SUPERPASSWORD + "@" + dbConf.DB_HOST + "/" + dbConf.DB_NAME;
 
 var connection = {
     handleError: function ( err ) {
+        'use strict';
+
         // no error occurred, continue with the request
         if ( !err ) return false;
 
@@ -25,7 +27,9 @@ var connection = {
         return true;
     },
     request    : function ( obj ) {
-        var that = this;
+        'use strict';
+
+        let that = this;
         pg.connect( conString, function ( err, client, done ) {
 
             if ( that.handleError( err ) ) return;
@@ -45,19 +49,26 @@ var connection = {
                 if ( obj.method === 'load' ) {
                     man.openAndReadableStream( obj.oid, bufferSize, obj.cb.bind( this, done, client ) );
                 }
-                else if ( obj.method === 'write' )
+                else if ( obj.method === 'write' ) {
                     man.createAndWritableStream( bufferSize, obj.cb.bind( this, done, client ) );
+                }
+                else if ( obj.method === 'delete' ) {
+                    man.unlink( obj.oid, obj.cb.bind( this, done, client ) );
+                }
 
             } );
         } );
     },
     load       : function ( data, res ) {
+        'use strict';
+
         this.request( {
             method: 'load',
             oid   : data.oid,
             cb    : function ( done, client, err, size, stream ) {
                 if ( err ) {
                     done( err );
+                    res.status( 400 ).send( sendToUser( "error", " Image not found." ) );
                     return console.error( 'Unable to read the given large object', err );
                 }
                 console.log( 'Streaming a large object with a total size of ', size );
@@ -92,6 +103,27 @@ var connection = {
                 fileStream.pipe( stream );
             }
         } );
+    },
+    delete     : function ( oid, callback ) {
+        'use strict';
+        this.request( {
+            method: 'delete',
+            oid   : oid,
+            cb    : function ( done, client, err, oid, stream ) {
+                if ( err ) {
+                    done( err );
+                    console.error( 'Unable to delete the given large object', err );
+
+                    return err;
+                }
+
+                console.log( 'deleted large object with oid', arguments );
+                client.query( 'COMMIT', callback.bind( this, oid ) );
+                done();
+
+            }
+        } );
+
     }
 };
 

@@ -5,6 +5,7 @@ var dbLaCo = require( "./db/dbLargeObjectConnection.js" );
 var formidable = require( "formidable" );
 var sendToUser = require( "./utils/sendToUser.js" );
 var util = require( 'util' );
+var Q = require( 'q' );
 var handlers = {
     user: {
         connect: function ( req, res ) {
@@ -119,11 +120,11 @@ var handlers = {
         },
         deletePost        : function ( req, res ) {
             var postId = req.params.blogPostId;
-            if ( !postId) {
+            if ( !postId ) {
                 res.status( 422 ).send( sendToUser( "error", "missing blogPostId " ) );
             }
 
-            var query = 'UPDATE site."blogPosts" SET (status) = (3) WHERE id='+postId+';';
+            var query = 'UPDATE site."blogPosts" SET (status) = (3) WHERE id=' + postId + ';';
 
             dbCo( query, function ( poolRealese, err, queryResp ) {
                 poolRealese( err );
@@ -159,7 +160,7 @@ var handlers = {
             if ( req.query.filter && req.query.filter !== '*' ) {
                 query += 'AND status=' + req.query.filter + ' ';
             }
-            if(req.params.blogPostId && req.params.blogPostId !== 'post_put'){
+            if ( req.params.blogPostId && req.params.blogPostId !== 'post_put' ) {
                 query += 'AND A.id=' + req.params.blogPostId + ' ';
             }
             if ( req.query.orderBy ) {
@@ -219,30 +220,46 @@ var handlers = {
             form.type = "multipart";
             form.multiples = true;
             form.parse( req, function ( err, fields, files ) {
+                var promisesArray = [];
+
                 var arrFiles = Object.keys( files ).map( function ( key ) {
                     return files[ key ]
                 } );
-                dbLaCo.save( arrFiles[ 0 ], function ( oid ) {
-                    var query = 'INSERT INTO site."images" (img_name,data_type,description,creation_date,oid) VALUES (\'' +
-                        arrFiles[ 0 ].name + '\',\'' +
-                        arrFiles[ 0 ].type + '\',\'' +
-                        fields.description + '\',DEFAULT,\'' +
-                        oid + '\')';
 
-                    dbCo( query, function ( poolRealese, err, queryResp ) {
-                        poolRealese( err );
-                        if ( err )
-                            res.status( 400 ).send( sendToUser( "error", "error upload image" ) );
-                        else {
-                            if ( queryResp.rowCount <= 0 )
-                                res.status( 400 ).send( sendToUser( "error", " error upload image." ) );
-                            else {
-                                res.status( 200 ).send( sendToUser( 'success', "File successfully uploaded", { postStatus: queryResp.rows } ) );
-                            }
-                        }
-                    } )
-                } );
+                for ( var index = 0; index < arrFiles.length; index++ ) {
 
+                    promisesArray.push( (function ( index ) {
+                        'use strict';
+                        var deferred = Q.defer();
+
+                        dbLaCo.save( arrFiles[ index ], function ( oid ) {
+                            var query = 'INSERT INTO site."images" (img_name,data_type,description,creation_date,oid) VALUES (\'' +
+                                arrFiles[ 0 ].name + '\',\'' +
+                                arrFiles[ 0 ].type + '\',\'' +
+                                fields.description + '\',DEFAULT,\'' +
+                                oid + '\')';
+
+                            dbCo( query, function ( poolRealese, err, queryResp ) {
+                                poolRealese( err );
+                                if ( err ) {
+                                    deferred.reject( "error upload image" );
+                                }
+                                else {
+                                    if ( queryResp.rowCount <= 0 )
+                                        deferred.reject( "error upload image" );
+                                    else {
+                                        deferred.resolve( queryResp.rowCount );
+                                    }
+                                }
+                            } )
+                        } );
+                    })( index ) )
+                }
+
+                Q.all( promisesArray ).done( function ( values ) {
+                    'use strict';
+                    res.status( 200 ).send( sendToUser( "succes", "imgs successfuly deleted" ) );
+                } )
             } );
         },
         getAllImages      : function ( req, res ) {
@@ -251,8 +268,8 @@ var handlers = {
 
             dbCo( query, function ( poolRealese, err, queryResp ) {
                 poolRealese( err );
-                if ( err || queryResp.rowCount <= 0 )
-                    res.status( 400 ).send( sendToUser( "error", " Image not found." ) );
+                if ( err || (queryResp && queryResp.rowCount <= 0) )
+                    res.status( 400 ).send( sendToUser( "error", " Images not founds." ) );
                 else {
                     res.status( 200 ).send( sendToUser( 'success', "all images data send ", queryResp.rows ) );
                 }
@@ -265,7 +282,7 @@ var handlers = {
 
             dbCo( query, function ( poolRealese, err, queryResp ) {
                 poolRealese( err );
-                if ( err || queryResp.rowCount <= 0 )
+                if ( err || (queryResp && queryResp.rowCount <= 0 ) )
                     res.status( 400 ).send( sendToUser( "error", " Image not found." ) );
                 else {
                     obj.name = queryResp.rows[ 0 ].img_name;
@@ -275,6 +292,54 @@ var handlers = {
                     dbLaCo.load( obj, res );
                 }
             } );
+
+        },
+        deleteImageByUid  : function ( req, res ) {
+            var oid = '';
+            console.log( req.body, req.body.length >= 0 );
+
+            if ( req.params.oid ) {
+                oid = req.params.oid;
+            }
+            else if ( req.body && req.body.length >= 0 ) {
+                console.log( "ici boum delete start", req.body );
+                var promisesArray = [];
+                for ( var index = 0; index < req.body.length; index++ ) {
+
+                    promisesArray.push( (function ( index ) {
+                        'use strict';
+
+                        var deferred = Q.defer();
+                        dbLaCo.delete( req.body[ index ].oid, function ( err, queryResp ) {
+
+                            var oid = req.body[ index ].oid;
+
+                            if ( err || (queryResp && queryResp.rowCount <= 0 ) ) {
+                                deferred.reject( err )
+                            }
+                            else {
+                                var query = 'DELETE FROM site."images" WHERE oid=' + oid + ' RETURNING *;';
+
+                                dbCo( query, function ( poolRealese, err, queryResp ) {
+                                    poolRealese( err );
+                                    if ( err || (queryResp && queryResp.rowCount <= 0 ) ) {
+                                        deferred.reject( " img data not deleted." );
+                                    }
+                                    else {
+                                        deferred.resolve( queryResp.rowCount );
+                                    }
+                                } );
+                            }
+                        } );
+                        return deferred;
+                    })( index ) );
+                }
+
+                Q.all( promisesArray ).done( function ( values ) {
+                    'use strict';
+                    res.status( 200 ).send( sendToUser( "succes", "imgs successfuly deleted" ) );
+                } )
+            }
 
         }
     }

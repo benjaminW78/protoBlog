@@ -42,7 +42,7 @@ router.route( "/api/blogPosts/:blogPostId" )
       } )
       .delete(loggedRoutes,function ( req, res ) {
           handlers.blog.deletePost( req, res );
-      })
+      });
 router.route( "/api/categories" )
       .get( loggedRoutes, function ( req, res ) {
           handlers.blog.getCategories( req, res );
@@ -53,11 +53,15 @@ router.route( "/api/postStatus" )
           handlers.blog.getPostStatus( req, res );
       } );
 
-router.route( "/api/images" )
+router.route( ["/api/images","/api/images/:oid"] )
       .post( loggedRoutes, function ( req, res ) {
           handlers.blog.uploadImages( req, res );
       } )
       .get( loggedRoutes, function ( req, res ) {
           handlers.blog.getAllImages( req, res );
+      } )
+      .delete( function ( req, res ) {
+          // console.log("deleteeee")
+          handlers.blog.deleteImageByUid( req, res );
       } );
 module.exports = router;
