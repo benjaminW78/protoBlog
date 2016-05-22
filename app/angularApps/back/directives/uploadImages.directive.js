@@ -19,7 +19,7 @@ var data = function () {
                             type: 'post',
                             data: {
                                 files      : files,
-                                description: 'test'
+                                description: 'img'
                             }
                         } ).then( function ( response ) {
                             $timeout( function () {

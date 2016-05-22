@@ -62,6 +62,6 @@ router.route( ["/api/images","/api/images/:oid"] )
       } )
       .delete( function ( req, res ) {
           // console.log("deleteeee")
-          handlers.blog.deleteImageByUid( req, res );
+          handlers.blog.deleteImagesByUid( req, res );
       } );
 module.exports = router;

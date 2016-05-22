@@ -294,7 +294,7 @@ var handlers = {
             } );
 
         },
-        deleteImageByUid  : function ( req, res ) {
+        deleteImagesByUid : function ( req, res ) {
             var oid = '';
             console.log( req.body, req.body.length >= 0 );
 
@@ -302,7 +302,6 @@ var handlers = {
                 oid = req.params.oid;
             }
             else if ( req.body && req.body.length >= 0 ) {
-                console.log( "ici boum delete start", req.body );
                 var promisesArray = [];
                 for ( var index = 0; index < req.body.length; index++ ) {
 
@@ -312,26 +311,27 @@ var handlers = {
                         var deferred = Q.defer();
                         dbLaCo.delete( req.body[ index ].oid, function ( err, queryResp ) {
 
-                            var oid = req.body[ index ].oid;
-
-                            if ( err || (queryResp && queryResp.rowCount <= 0 ) ) {
+                            if ( err ) {
                                 deferred.reject( err )
                             }
-                            else {
-                                var query = 'DELETE FROM site."images" WHERE oid=' + oid + ' RETURNING *;';
+                        } );
 
-                                dbCo( query, function ( poolRealese, err, queryResp ) {
-                                    poolRealese( err );
-                                    if ( err || (queryResp && queryResp.rowCount <= 0 ) ) {
-                                        deferred.reject( " img data not deleted." );
-                                    }
-                                    else {
-                                        deferred.resolve( queryResp.rowCount );
-                                    }
-                                } );
+                        var oid = req.body[ index ].oid;
+
+                        var query = 'DELETE FROM site.images WHERE oid=' + oid + ';';
+
+                        dbCo( query, function ( poolRealese, err, queryResp ) {
+                            poolRealese( err );
+                            if ( err || (queryResp && queryResp.rowCount <= 0 ) ) {
+                                deferred.reject( " img data not deleted." );
+                            }
+                            else {
+                                deferred.resolve( queryResp.rowCount );
                             }
                         } );
+
                         return deferred;
+
                     })( index ) );
                 }
 
