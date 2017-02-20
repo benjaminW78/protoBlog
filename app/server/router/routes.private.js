@@ -13,7 +13,7 @@ var sendToUser = require( "../utils/sendToUser.js" );
 function loggedRoutes ( req, res, next ) {
     console.log( "req", req.isAuthenticated(), req.path, req.url );
     if ( !req.isAuthenticated() )
-        res.status( 401 ).redirect( sendToUser( 'succes', 'redirection', { path: '/' } ) );
+        res.status( 401 ).redirect('/' );
     else {
         next();
     }
@@ -25,5 +25,7 @@ router.route( "/admin" )
           console.log( "on est connecté" );
           fs.createReadStream( __dirname + VIEWS_PATH + "/index.html" ).pipe( res );
       } );
-
+router.route('*', function(req, res) {
+    res.redirect('/');
+});
 module.exports = router;
