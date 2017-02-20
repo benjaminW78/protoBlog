@@ -1,8 +1,9 @@
 YOLO YOU ARE CONNECTED TO BACK
 
-<div class="row ">
-    <ul class="list-group col-md-6">
-        <li ng-class="whatClassIsIt(current.status)" ng-repeat='current in blogPosts'>
+<div class="row " >
+    <div ng-show="!blogPosts"> no blog Posts</div>
+    <ul class="list-group col-md-6" ng-show="blogPosts">
+        <li ng-class="whatClassIsIt(current.status)" ng-repeat='current in blogPosts' >
             <a href="#createBlogPost/{{current.id}}">
                 <p>{{current.title}}
                     <span class="label label-default label-pill pull-xs-right">{{current.status}}</span>

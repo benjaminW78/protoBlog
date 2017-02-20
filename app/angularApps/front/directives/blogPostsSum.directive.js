@@ -15,7 +15,7 @@ var data = function () {
                         },
                         successCb = function ( resData ) {
                             if ( resData.status === 200 ) {
-                                $scope.blogPosts = resData.data;
+                                $scope.blogPosts = resData.data.kapsule;
                                 // $scope.blogPosts=$scope.blogPosts.map(function(data,index,array){
                                 //     // data.creation_date = moment(data.creation_date).format('Do MMMM  YYYY, h:mm:ss');
                                 // });

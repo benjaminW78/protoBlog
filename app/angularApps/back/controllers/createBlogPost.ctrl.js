@@ -83,10 +83,10 @@ var data = [ '$scope',
             console.log( $scope.blogPostForm );
             $scope.blogPostForm.timeStamp = moment();
             var objClone = $.extend( objClone, $scope.blogPostForm );
-            ;
             for ( var i in objClone ) {
-                if ( i !== 'timeStamp' )
-                    objClone[ i ] = escape( objClone[ i ] );
+                if ( i !== 'timeStamp' ) {
+                    objClone[ i ] = encodeURI( objClone[ i ] );
+                }
             }
             var opts = {
                     method: ($routeParams.blogPostId === 'post_put') ? 'post' : 'put',

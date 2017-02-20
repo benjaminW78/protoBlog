@@ -100,8 +100,8 @@ var handlers = {
                 req.user.email + '\',\'' +
                 data.timeStamp + '\',\'' +
                 data.summary + '\',\'' +
-                data.postStatusId + '\',\'' +
-                data.categoryId
+                data.status_id + '\',\'' +
+                data.category_id
                 + '\') RETURNING *;';
 
             dbCo( query, function ( poolRealese, err, queryResp ) {
@@ -151,8 +151,7 @@ var handlers = {
                     'B.name as status, ' +
                     'B.id as status_id, ' +
                     'A.summary, ' +
-                    'A.category_id, ' +
-                    'A.content_html ' +
+                    'A.category_id ' +
                     'FROM ' +
                     ' site."blogPosts" as A ,site."blogPostStatus" as B ' +
                     'WHERE A.status = B.id ',
@@ -174,7 +173,7 @@ var handlers = {
                 }
                 else {
                     if ( queryResp.rowCount <= 0 )
-                        res.status( 400 ).send( sendToUser( "error", " impossible to get posts." ) );
+                        res.status( 204 ).send( sendToUser( "warning", "no blogPost" ) );
                     else
                         res.status( 200 ).send( sendToUser( 'success', "blog posts successfully getted.", queryResp.rows ) );
                 }
