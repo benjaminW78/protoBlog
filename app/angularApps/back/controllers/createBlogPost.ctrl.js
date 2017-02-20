@@ -74,7 +74,7 @@ var data = [ '$scope',
         };
 
         $scope.$watch( 'imgSelected.length', function ( newValue, oldValue ) {
-            if ( newValue!== oldValue) {
+            if ( newValue !== oldValue ) {
                 $scope.insertSelectedImages();
             }
         } );
